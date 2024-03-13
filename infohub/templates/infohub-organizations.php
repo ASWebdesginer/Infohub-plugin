@@ -238,10 +238,6 @@ if ($lang == "ar") {
 
                   <?php print $rows['logo']; ?>
 
-                  <?php print $rows['modal']; ?>
-
-
-
                   <div class="infohub-social">
 
                     <?php print $socialTitle; ?>
@@ -251,6 +247,8 @@ if ($lang == "ar") {
                     <?php print $rows['social']; ?>
 
                   </div>
+
+                  <?php print $rows['modal']; ?>
 
 
 

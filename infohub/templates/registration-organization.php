@@ -45,10 +45,11 @@ $postId = get_the_ID();
 <?php get_header(); ?>
 
 <style>
-  .form-check{
+  .form-check {
     display: flex;
     gap: 20px;
   }
+
   div#failedmessage {
     width: 370px;
     color: #405561;
@@ -59,11 +60,11 @@ $postId = get_the_ID();
     font-weight: 700;
     line-height: 27px;
     letter-spacing: -0.22px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     padding: 20px 40px;
     border-radius: 20px;
     margin: auto;
-}
+  }
 </style>
 
 <header>
@@ -82,7 +83,7 @@ $postId = get_the_ID();
 
 
 
-  <section class="">
+  <section class="non-vh">
 
 
 
@@ -140,7 +141,7 @@ $postId = get_the_ID();
 
                 <center>
 
-                  <p class="fnt-dark-gray fnt-20">If you are a public, private or non-governmental entity acting within the field of urban development in the Arab region and have offices in at least one of its countries, please contribute to our Portal by providing information about your ORGANIZATION by filling out this form.<a href="#" data-step="step1" data-num="1" class="step-button" onClick="return false;">out this form</a>.</p>
+                  <p class="fnt-dark-gray fnt-20">If you are a public, private or non-governmental entity acting within the field of urban development in the Arab region and have offices in at least one of its countries, please contribute to our Portal by providing information about your ORGANIZATION by filling out <a href="#" data-step="step1" data-num="1" class="step-button fnt-blue-light" onClick="return false;">this form</a>.</p>
 
                 </center>
 
@@ -329,7 +330,7 @@ $postId = get_the_ID();
 
                 <center>
 
-                  <p class="fnt-dark-gray fnt-20">Does it have offices in Arab countries?​​</p>
+                  <p class="fnt-dark-gray fnt-20">Does it have offices in Arab countries?</p>
 
 
 
@@ -395,7 +396,7 @@ $postId = get_the_ID();
 
                   <div class="form-check">
 
-                  <?php echo do_shortcode('[arab_countries_dropdown]'); ?>
+                    <?php echo do_shortcode('[arab_countries_dropdown]'); ?>
 
 
                   </div>
@@ -451,7 +452,7 @@ $postId = get_the_ID();
 
           <div class="infohub-steps step8" id="failedmessage">
             <div class="message">
-             <p class="fnt-dark-gray fnt-20">Thank you for your interest, however, this page is dedicated only to organizations with offices within the Arab region.​</p>
+              <p class="fnt-dark-gray fnt-20">Thank you for your interest, however, this page is dedicated only to organizations with offices within the Arab region.</p>
             </div>
           </div>
 
@@ -564,8 +565,9 @@ $postId = get_the_ID();
 
                 <center>
 
-                  <p class="fnt-dark-gray fnt-20">إذا كنتم مؤسسة عامة أو خاصة أو غير حكومية، تعمل في حقل التنمية الحضرية في المنطقة العربية، ولديكم على الأقل مكتب في إحدى الدول العربية، يرجى المساهمة في بوابتنا من خلال تزويدنا بمعلومات حول منظمتكم، وذلك عبر ملء  . 
-<a href="#" data-step="step1" data-num="1" class="step-button" onClick="return false;">  هذه الإستمارة</a>.</p>
+                  <p class="fnt-dark-gray fnt-20">إذا كنتم مؤسسة عامة أو خاصة أو غير حكومية، تعمل في حقل التنمية الحضرية في المنطقة العربية، ولديكم على الأقل مكتب في إحدى الدول العربية، يرجى المساهمة في بوابتنا من خلال تزويدنا بمعلومات حول منظمتكم وذلك عبر ملء 
+                    <a href="#" data-step="step1" data-num="1" class="step-button fnt-blue-light" onClick="return false;"> هذه الإستمارة</a>.
+                  </p>
 
                 </center>
 
@@ -599,7 +601,7 @@ $postId = get_the_ID();
 
                 <center>
 
-                  <p class="fnt-dark-gray fnt-20">	ملاحظة: إن المعلومات المقدمة إلى البوابة يجب أن تُقدم من قِبل ممثلين مخولين نيابةً عن منظماتهم فقط.</p>
+                  <p class="fnt-dark-gray fnt-20"> ملاحظة: إن المعلومات المقدمة إلى البوابة يجب أن تُقدم من قِبل ممثلين مخولين نيابةً عن منظماتهم فقط.</p>
 
 
 
@@ -607,13 +609,13 @@ $postId = get_the_ID();
 
 
 
-                  <div class="form-check">
+                  <div class="form-check mi6-w-50">
 
                     <input class="form-check-input step-button" type="checkbox" value="" data-step="step2" data-num="2" id="flexCheckDefault">
 
                     <label class="form-check-label fnt-20 fnt-dark-gray" for="flexCheckDefault">
 
-                    أؤكد أنني مخول بتقديم المعلومات بإسم منظمتي.
+                      أؤكد أنني مخول بتقديم المعلومات بإسم منظمتي.
 
                     </label>
 
@@ -668,7 +670,7 @@ $postId = get_the_ID();
 
                     <label class="form-check-label fnt-20 fnt-dark-gray" for="flexCheckDefault">
 
-                    نعم
+                      نعم
                     </label>
 
                   </div>
@@ -677,7 +679,7 @@ $postId = get_the_ID();
                     <input class="form-check-input step-button" type="checkbox" value="no" data-step="step3" data-num="3" id="flexCheckDefault" data-types="hqlocationmi">
 
                     <label class="form-check-label fnt-20 fnt-dark-gray" for="flexCheckDefault">
-                    لا
+                      لا
                     </label>
 
                   </div>
@@ -721,7 +723,7 @@ $postId = get_the_ID();
 
                   <div class="form-check">
 
-                    <?php echo do_shortcode('[country_select]'); ?>
+                    <?php echo do_shortcode('[arab_countries_dropdown]'); ?>
 
                   </div>
 
@@ -769,7 +771,7 @@ $postId = get_the_ID();
                     <input class="form-check-input step-button" type="checkbox" value="yes" data-step="step5" data-num="5" id="flexCheckDefault" data-types="sublocationmi">
 
                     <label class="form-check-label fnt-20 fnt-dark-gray" for="flexCheckDefault">
-                    نعم
+                      نعم
 
                     </label>
 
@@ -779,7 +781,7 @@ $postId = get_the_ID();
                     <input class="form-check-input step-button" type="checkbox" value="no" data-step="step5" data-num="5" id="flexCheckDefault" data-types="sublocationmi">
 
                     <label class="form-check-label fnt-20 fnt-dark-gray" for="flexCheckDefault">
-                    لا
+                      لا
 
                     </label>
 
@@ -824,7 +826,7 @@ $postId = get_the_ID();
 
                   <div class="form-check">
 
-                    <?php echo do_shortcode('[country_select]'); ?>
+                    <?php echo do_shortcode('[arab_countries_dropdown]'); ?>
 
 
                   </div>
@@ -874,8 +876,8 @@ $postId = get_the_ID();
 
           <div class="infohub-steps step8" id="failedmessage">
             <div class="message">
-             <p class="fnt-dark-gray fnt-20">نشكرك على اهتمامك، ولكن هذه الصفحة مخصصة فقط للمؤسسات التي لها مكاتب داخل المنطقة العربية
-.​</p>
+              <p class="fnt-dark-gray fnt-20">نشكرك على اهتمامك، ولكن هذه الصفحة مخصصة فقط للمؤسسات التي لها مكاتب داخل المنطقة العربية
+                .​</p>
             </div>
           </div>
 
@@ -916,7 +918,7 @@ $postId = get_the_ID();
 
                   <div class="col-6 col-md-4">
 
-                    <a href="<?php print home_url(); ?>/infohub/registration/organizations?lang=confirmed" class="btn btn-primary btn-blue w-100 fnt-20">إنجليزي</a>
+                    <a href="<?php print home_url(); ?>/infohub-ar/registration/organizations?lang=confirmed" class="btn btn-primary btn-blue w-100 fnt-20">إنجليزي</a>
 
                   </div>
 
@@ -961,6 +963,14 @@ $postId = get_the_ID();
 
 
 
+  <?php
+  $link = "";
+  if ($lang == "en") {
+    $link = home_url("en/our-programs/urban-policy-research/?tab=srd1-tab-pane");
+  } else {
+    $link = home_url("برامجنا/برنامج-السياسات-الحضرية");
+  }
+  ?>
 
 
 
@@ -970,8 +980,20 @@ $postId = get_the_ID();
 
   <script>
     jQuery(document).ready(function() {
+      jQuery("body").on("click", '.btn-infohub-submit', function(e) {
+        //  e.preventDefault();
 
+        var url = "<?php echo $link; ?>";
 
+        setTimeout(function() {
+          window.location.href = url;
+        }, 3000);
+
+        // if (classlist[0].indexOf(clakos) !== -1) {
+        //   window.location.href = url;
+        //         }
+
+      })
 
       jQuery(".step-button").each(function() {
 
@@ -989,15 +1011,14 @@ $postId = get_the_ID();
 
 
 
-          if(jQuery(this).attr("data-types") == "sublocationmi"){
-            if(jQuery(this).val() == "no"){
-              nextStep=nextStep+2;
+          if (jQuery(this).attr("data-types") == "sublocationmi") {
+            if (jQuery(this).val() == "no") {
+              nextStep = nextStep + 2;
               console.log(nextStep);
             }
-          }
-          else if(jQuery(this).attr("data-types") == "hqlocationmi"){
-            if(jQuery(this).val() == "no"){
-              nextStep=nextStep+1;
+          } else if (jQuery(this).attr("data-types") == "hqlocationmi") {
+            if (jQuery(this).val() == "no") {
+              nextStep = nextStep + 1;
               console.log(nextStep);
             }
 
@@ -1018,26 +1039,25 @@ $postId = get_the_ID();
 
       });
 
-     jQuery("select").on("change", function(){
-       var  currentindex=jQuery(this).closest(".infohub-steps").attr('data-step');
-       var nextStep = parseInt(currentindex) + 1;
-       var prev=parseInt(currentindex) - 1;
-       console.log(nextStep);
-       
-       if(currentindex == 6){
-        console.log(jQuery(".step" + prev + "").find("input:checked").val());
-        if(jQuery(".step" + prev + "").find("input:checked").val() == "no"){
-          nextStep=nextStep+1;
+      jQuery("select").on("change", function() {
+        var currentindex = jQuery(this).closest(".infohub-steps").attr('data-step');
+        var nextStep = parseInt(currentindex) + 1;
+        var prev = parseInt(currentindex) - 1;
+        console.log(nextStep);
+
+        if (currentindex == 6) {
+          console.log(jQuery(".step" + prev + "").find("input:checked").val());
+          if (jQuery(".step" + prev + "").find("input:checked").val() == "no") {
+            nextStep = nextStep + 1;
+          }
+        } else if (currentindex == 4) {
+          if (jQuery(".step" + prev + "").find("input:checked").val() == "yes") {
+            nextStep = nextStep + 2;
+          }
         }
-       }
-       else if(currentindex == 4){
-        if(jQuery(".step" + prev + "").find("input:checked").val() == "yes"){
-          nextStep=nextStep+2;
-        }
-       }
-       jQuery(this).closest(".infohub-steps").fadeOut(400)
+        jQuery(this).closest(".infohub-steps").fadeOut(400)
         jQuery(".step" + nextStep + "").delay(400).fadeIn(800);
-     })
+      });
 
     });
   </script>

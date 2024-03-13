@@ -2040,7 +2040,7 @@ function getTransCountry($ccode){
 
         'PW' => 'Palau',
 
-        'PS' => 'Palestinian Territories',
+        'PS' => 'Palestine',
 
         'PA' => 'Panama',
 
@@ -2552,7 +2552,7 @@ function getTransCountry($ccode){
 
         'PW' => 'بالاو',
 
-        'PS' => 'الأراضي الفلسطينية',
+        'PS' => 'فلسطين',
 
         'PA' => 'بنما',
 

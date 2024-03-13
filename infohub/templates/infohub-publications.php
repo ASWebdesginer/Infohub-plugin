@@ -136,7 +136,7 @@ if ($lang == "ar") {
 
 					<button class="accordion-button collapsed d-flex align-items-center justify-content-between pr_23_mi" type="button" data-bs-toggle="collapse" data-bs-target="#body-<?php print $row['ID']; ?>">
 						<div class="mi_title_type">
-							<p class="remMar mi_20_500"><b><?php print $row['name']; ?></b> <span class="hide_mitch"> <?php print $row['pubType']; ?> </span></p>
+							<p class="remMar mi_20_500"><b><?php print $row['name']; ?></b> <span class="hide_mitch"> - <?php print $row['pubType']; ?> </span></p>
 
 							<small><?php print $row['pubYear']; ?></small>
 						</div>
@@ -164,7 +164,8 @@ if ($lang == "ar") {
 
 									<div class="col-md-5">
 
-										<b><?php print forceTranslate("Organization Name", "اسم المنظمة"); ?>:</b>
+										<p class="remMar"><b><?php print forceTranslate("Organization Name", "اسم المنظمة"); ?>:</b></p>
+										<p class="fnt-15 remMar"><small>(<?php print forceTranslate("that authored / published the document", "التي قامت بتأليف / نشر المنشور "); ?>)</small></p>
 
 									</div>
 
@@ -208,7 +209,7 @@ if ($lang == "ar") {
 
 									<div class="col-md-5"><b><?php print forceTranslate("Publication Date", "تاريخ النشر"); ?>:</b></div>
 
-									<div class="col-md-7"><?php print $row['pubDate']; ?></div>
+									<div class="col-md-7"><?php print $row['pubYear']; ?></div>
 
 								</div>
 

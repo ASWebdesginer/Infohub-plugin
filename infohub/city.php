@@ -1265,105 +1265,7 @@ function getCityDetailsInfohub()
 }
 
 
-// function getprojectDetailsInfohub(){
 
-// 	$lang = pll_current_language();
-
-// 	$args = array(
-//    'post_type' => 'project',
-//    'lang' => $lang, 
-//    'posts_per_page' => -1, 
-//   );
-
-//   $posts = get_posts($args);
-
-//   $arrayList = array();
-
-//   foreach($posts as $row){
-
-//   	// print_r($row);
-// 	  $postId = $row->ID; 
-// 	  if($lang== 'en'){
-// 		  $posturl= "https://dev.araburban.org/infohub/projects/?id=$postId";
-// 	  }
-// 	  else{
-// 		  $posturl= "https://dev.araburban.org/infohub-ar/projects/?id=$postId";
-// 	  }
-// 	  $reference = get_field("reference",$postId);
-// 	  $getinfo = get_field("section_1",$postId);
-// 	  $staringdate=$getinfo["starting_date"];
-// 	  $dateObject = new DateTime($staringdate);
-// 	  $staringyear = $dateObject->format("Y");
-// 	  $enddate=$getinfo["end_date"];
-// 	  $dateObject = new DateTime($enddate);
-// 	  $endyear = $dateObject->format("Y");
-// 	  $ongoing=$getinfo["on-going"];
-// 	  $country=$getinfo["country"];
-// 	  $city=$getinfo["city"];
-// 	  if($city){
-// 		  $cityid=$city[0];
-// 	  }
-// 	  $post_type = 'city'; // Replace with the actual post type
-// 	  $post = get_post($cityid, OBJECT, $post_type);
-// 	  if ($post) {
-// 		  $post_title = $post->post_title;
-// 	  }
-// 	  $titles=$getinfo[$titleid];
-// 	  $longitude = $reference['longitude'];
-
-// 	   $latitude = $reference['latitude'];
-
-//   	$postId = $row->ID;
-//   	$longtitude = get_field('longtitude', $postId);
-//   	$latitude = get_field('latitude', $postId);
-//   	$featImg = get_featured_image_url($postId);
-//   	$content = $row->post_content;
-//   	$country = get_field('country', $postId);
-//   	$markers = "";
-
-//   	$img_url = site_url().'/wp-content/uploads/2023/11/country-img.jpg';
-//   	if($featImg){
-//   		$img_url = $featImg;
-//   	}
-
-//   	$contentPost = " ";
-//   	if($content){
-//   		$contentPost = $content;
-//   	}
-
-//   	$forceRtl = '';
-//   	if($lang == "ar"){
-//   		$forceRtl = 'force-rtl';
-//   	}
-
-//   	$arrayList[] = '
-//          if (feature.properties.Name === "'.$row->post_title.'") {
-//             var popupContent = \'<div class="popup-content '.$markers.' '.$forceRtl.'">\';
-//             popupContent += \'<h3 class="popup-name remMar">\' + feature.properties.Name + \'</h3>\';
-//             popupContent += \'<h5 class="popup-name">'.$country['label'].'</h5>\';
-//             popupContent += \'<p class="popup-info">\' + feature.properties.Info + \'</p>\';
-//             popupContent += \'<div class="popup-image"><img src="'.$post->post_title.'" class="img-fluid"></div>\';
-//             popupContent += \'</div>\';
-
-//             var popupOptions = {
-//                 className: \'custom-popup\' // Add custom class for styling
-//             };
-
-//             if (L.Browser.mobile) {
-//                 // Use a different class for mobile devices to adjust styling
-//                 popupOptions.className = \'custom-popup-mobile\';
-//             }
-
-//             marker.bindPopup(popupContent, popupOptions);
-//         }  		
-//   	';
-//   }
-
-//  $details = implode("",$arrayList); 
-
-//  return $details;
-
-// }
 
 function getcitySearch($arrays)
 {
@@ -1418,8 +1320,6 @@ function getcitySearch($arrays)
 		'post_status' => 'publish',
 
 		'numberposts' => -1,
-        
-
 
 	);
 
@@ -1432,7 +1332,6 @@ function getcitySearch($arrays)
 	$arrayList = array();
 
 
-   $output="<div class='searchajax $title d-flex flex-column'>";
 //    var_dump($title);
 	foreach ($query as $row) {
 
@@ -1442,10 +1341,22 @@ function getcitySearch($arrays)
         
        $link=get_the_permalink($postId);
 
-		$name =  $row->post_title;
+        
+		$tranlsation=pll_get_post_translations($postId);
+		$name =  get_the_title($tranlsation['en']);
+		$name_ar =  get_the_title($tranlsation['ar']);
+
+    
+		if($lang =="en"){
+			$link=home_url("en/infohub/cities/?id=$postId");
+		}else{
+            $link=home_url("infohub-ar/cities/?id=$postId");
+		}
         $arrayitem=array( 
 			'link' => $link,
 			'name' => $name,
+			'name_ar' => $name_ar,
+			'postid' => $lang == 'en' ? $tranlsation['en'] : $tranlsation['ar'],
 		);
 		array_push($arrayList, $arrayitem);
 
@@ -1453,7 +1364,6 @@ function getcitySearch($arrays)
 
 	}
     
-	$output .= "</div>";
 
 
 
@@ -1742,7 +1652,7 @@ function getCitiesHtml($arrays)
 
 	if ($lang == "ar") {
 
-		$projUrl = home_url() . '/infohub-ar /cities/?id=';
+		$projUrl = home_url() . '/infohub-ar/cities/?id=';
 	}
 
 
@@ -1824,3 +1734,104 @@ function getCitiesHtml($arrays)
 
 	return $output;
 }
+
+
+// function getprojectDetailsInfohub(){
+
+// 	$lang = pll_current_language();
+
+// 	$args = array(
+//    'post_type' => 'project',
+//    'lang' => $lang, 
+//    'posts_per_page' => -1, 
+//   );
+
+//   $posts = get_posts($args);
+
+//   $arrayList = array();
+
+//   foreach($posts as $row){
+
+//   	// print_r($row);
+// 	  $postId = $row->ID; 
+// 	  if($lang== 'en'){
+// 		  $posturl= "https://dev.araburban.org/infohub/projects/?id=$postId";
+// 	  }
+// 	  else{
+// 		  $posturl= "https://dev.araburban.org/infohub-ar/projects/?id=$postId";
+// 	  }
+// 	  $reference = get_field("reference",$postId);
+// 	  $getinfo = get_field("section_1",$postId);
+// 	  $staringdate=$getinfo["starting_date"];
+// 	  $dateObject = new DateTime($staringdate);
+// 	  $staringyear = $dateObject->format("Y");
+// 	  $enddate=$getinfo["end_date"];
+// 	  $dateObject = new DateTime($enddate);
+// 	  $endyear = $dateObject->format("Y");
+// 	  $ongoing=$getinfo["on-going"];
+// 	  $country=$getinfo["country"];
+// 	  $city=$getinfo["city"];
+// 	  if($city){
+// 		  $cityid=$city[0];
+// 	  }
+// 	  $post_type = 'city'; // Replace with the actual post type
+// 	  $post = get_post($cityid, OBJECT, $post_type);
+// 	  if ($post) {
+// 		  $post_title = $post->post_title;
+// 	  }
+// 	  $titles=$getinfo[$titleid];
+// 	  $longitude = $reference['longitude'];
+
+// 	   $latitude = $reference['latitude'];
+
+//   	$postId = $row->ID;
+//   	$longtitude = get_field('longtitude', $postId);
+//   	$latitude = get_field('latitude', $postId);
+//   	$featImg = get_featured_image_url($postId);
+//   	$content = $row->post_content;
+//   	$country = get_field('country', $postId);
+//   	$markers = "";
+
+//   	$img_url = site_url().'/wp-content/uploads/2023/11/country-img.jpg';
+//   	if($featImg){
+//   		$img_url = $featImg;
+//   	}
+
+//   	$contentPost = " ";
+//   	if($content){
+//   		$contentPost = $content;
+//   	}
+
+//   	$forceRtl = '';
+//   	if($lang == "ar"){
+//   		$forceRtl = 'force-rtl';
+//   	}
+
+//   	$arrayList[] = '
+//          if (feature.properties.Name === "'.$row->post_title.'") {
+//             var popupContent = \'<div class="popup-content '.$markers.' '.$forceRtl.'">\';
+//             popupContent += \'<h3 class="popup-name remMar">\' + feature.properties.Name + \'</h3>\';
+//             popupContent += \'<h5 class="popup-name">'.$country['label'].'</h5>\';
+//             popupContent += \'<p class="popup-info">\' + feature.properties.Info + \'</p>\';
+//             popupContent += \'<div class="popup-image"><img src="'.$post->post_title.'" class="img-fluid"></div>\';
+//             popupContent += \'</div>\';
+
+//             var popupOptions = {
+//                 className: \'custom-popup\' // Add custom class for styling
+//             };
+
+//             if (L.Browser.mobile) {
+//                 // Use a different class for mobile devices to adjust styling
+//                 popupOptions.className = \'custom-popup-mobile\';
+//             }
+
+//             marker.bindPopup(popupContent, popupOptions);
+//         }  		
+//   	';
+//   }
+
+//  $details = implode("",$arrayList); 
+
+//  return $details;
+
+// }

@@ -109,9 +109,10 @@ function getSingleProj($id)
 	$topicWordsArray = array();
 
 	$getTopicWords = $section_2['topic_words'];
+ 
 
 	if ($getTopicWords) {
-
+              
 		foreach ($getTopicWords as $rowTopicWords) {
 
 			$topicWordsArray[] = '<span class="btn btn-light shadowed">' . getTermName($rowTopicWords) . '</span>';
@@ -1218,13 +1219,8 @@ function getprojsearch($arrays)
 	$args = array(
 
 		'post_type' => 'project',
-
 		'post_status' => 'publish',
-
 		'numberposts' => -1,
-        
-
-
 
 	);
 
@@ -1235,27 +1231,43 @@ function getprojsearch($arrays)
 
 
 	$arrayList = array();
+
+	$projUrl = home_url() . '/infohub/projects/?id=';
+	if ($lang == "ar") {
+		$projUrl = home_url() . '/infohub-ar/projects/?id=';
+	}
+
     
     
    $output="<div class='searchajax $title d-flex flex-column'>";
    if(!empty($title)){
 
-//    var_dump($title);
+	//var_dump($title);
 	foreach ($query as $row) {
 
 		$postId = $row->ID;
 		$section_1 = get_field("section_1", $postId);
 
-       $link=get_the_permalink($postId);
+       $link = '';
+       $name =  $section_1['project_name_en'];
+    //    if($lang == "ar"){
+    //    	$name =  $section_1['project_name_ar'];
+    //    }
+
 	   $namear =  $section_1['project_name_ar'];
 
-		$name =  $section_1['project_name_en'];
-        $arrayitem=array( 
+		if($lang =="en"){
+			$link=home_url("en/infohub/projects/?id=$postId");
+		}else{
+            $link=home_url("infohub-ar/projects/?id=$postId");
+		}
+        $arrayList[] = array( 
 			'link' => $link,
 			'name' => $name,
-			'name_ar' => $namear
+			'name_ar' => $namear,
+			'postid' => $postId
 		);
-		array_push($arrayList, $arrayitem);
+		//array_push($arrayList, $arrayitem);
 
 		// if($lang == 'en'){
 		// 	$titlespace=str_replace('_',' ',$title);
@@ -1272,11 +1284,9 @@ function getprojsearch($arrays)
 		// 	}
 		// }
 
-
-		
-
 	}
-} else{
+
+}else{
 	$output .= "<p class='p-2'>".forceTranslate("No results found", "لا توجد نتائج")."</p>";
 }
 	$output .= "</div>";
@@ -1286,10 +1296,11 @@ function getprojsearch($arrays)
 
 	// $output .= getPubHtml($arrayList);
 
-   ;
-
-	return  json_encode($arrayList);
+   
+   //print_r($arrayList);
+	return  json_encode($arrayList,JSON_UNESCAPED_UNICODE);
 }
+
 function getProjFiltered($arrays)
 {
 
@@ -1404,6 +1415,119 @@ function getProjFiltered($arrays)
 	return $output;
 }
 
+function showsearchproj($postid){
+
+	$lang = pll_current_language();
+
+	$sortBy = 'section_1_project_name_en';
+	if ($lang == "ar") {
+		$sortBy = 'section_1_project_name_ar';
+	}
+
+	// $countryArray = "";
+	// $countCountryArray = count($arrays['filter-projects-country']);
+	// if ($countCountryArray != 0) {
+	// 	$countryArray=$arrays['filter-projects-country'];
+	// }
+
+	// $cityArray = "";
+	// $countCityArray = count($arrays['filter-projects-city']);
+	// if ($countCityArray != 0) {
+	// 	$cityArray=$arrays['filter-projects-city'];
+	// }
+
+	// $topicsArray = "";
+	// $countTopicsArray = count($arrays['filter-projects-topics']);
+	// if ($countTopicsArray != 0) {
+	//       $topicsArray = $arrays['filter-projects-topics'];
+	// }
+
+	$args = array(
+		'post_type' => 'project',
+		'post_status' => 'publish',
+		'post__in'=>array($postid),
+		'numberposts' => -1,
+	);
+
+	$query = get_posts($args);
+
+	$arrayList = array();
+	$output = "";
+
+
+
+	foreach ($query as $row) {
+
+		//print_r(print_r);
+		$countrymi = get_field('section_1', $row->ID);
+		$words = get_field('section_2', $row->ID);
+
+
+			$postId = $row->ID;
+			$proj_name = "";
+
+			$section_1 = get_field("section_1", $postId);
+
+			//print_r(get_field("section_1_country",$postId));
+
+			if ($section_1['project_name_en'] || $section_1['project_name_ar']) {
+
+				$proj_name = $section_1['project_name_en'];
+
+				if ($lang == "ar") {
+
+					$proj_name = $section_1['project_name_ar'];
+				}
+			} else {
+
+				$proj_name = $getProj->post_title;
+			}
+
+
+
+			$project_code = $section_1['project_code'];
+			$starting_date = date("Y", strtotime($section_1['starting_date']));
+			$end_date = date("Y", strtotime($section_1['end_date']));
+			$on_going = $section_1['on-going'];
+
+			if ($on_going == 1) {
+
+				$end_date = forceTranslate("Ongoing", "العمل مستمر");
+			}
+
+			$country = "";
+			$getCountry = $section_1['country'];
+
+			if ($getCountry) {
+				$country = $getCountry['label'];
+			}
+
+			//$country = $section_1['country'];
+
+			$city = "";
+			$getCity = $section_1['city'];
+			if ($getCity) {
+				$city = getRelName($getCity[0]);
+			}
+
+			$arrayList[] = array(
+				'ID' => $postId,
+				'proj_name' => $proj_name,
+				'project_code' => $project_code,
+				'starting_date' => $starting_date,
+				'end_date' => $end_date,
+				'country' => $country,
+				'city' => $city,
+			);
+		}
+	
+
+
+	$output .= getProjHtml($arrayList);
+
+	return $output;
+}
+
 function getProjHtml($arrays)
 {
 
@@ -1425,17 +1549,31 @@ function getProjHtml($arrays)
 
 		$arrayList[] = '
 
-	        <div class="col-12 project-item">
+	        <div class="col-12 project-item mi6_desktop_view d-none d-md-block">
 	          <a href="' . $projUrl . $row['ID'] . '">
 	            <div class="row align-items-center list equaltablemi" id="equaltablemid"">
-	              <div class="col-md-3">' . $row['proj_name'] . '</div>
-	              <div class="col-md-3">' . $row['city'] . '</div>
-	              <div class="col-md-2">' . $row['country'] . '</div>
-	              <div class="col-md-2">' . $row['starting_date'] . '</div>
-	              <div class="col-md-2">' . $row['end_date'] . '</div>
+	              <div class="col-md-12"><b>' . $row['proj_name'] . '</b></div>
+	              <div class="col-md-6">' . $row['city'] . '</div>
+	              <div class="col-md-6">' . $row['country'] . '</div>
+	              <div class="col-md-6">' . $row['starting_date'] . '</div>
+	              <div class="col-md-6">' . $row['end_date'] . '</div>
 	            </div>          
 	          </a>
 	        </div>
+
+			<div class="col-12 project-item mi6_mobile_view d-block d-md-none">
+	          <a href="' . $projUrl . $row['ID'] . '">
+	            <div class="row align-items-center list equaltablemi" id="equaltablemid"">
+	              <div class="col-md-12 px-0 mi6_pd_bottom_10"><b>' . $row['proj_name'] . '</b></div>
+	              <div class="row px-0 mi6_font_size_14"><div class="col col-md-6 mi6_pd_rt_0">' .forceTranslate("City: ", "المدينة : "). $row['city'] . '</div>
+				  <div class="col col-md-6 px-0">' .forceTranslate("Starting Date: ", "تاريخ : "). $row['starting_date'] . '</div></div>
+	              <div class="row px-0 mi6_font_size_14"><div class="col col-md-6 mi6_pd_rt_0"> ' .forceTranslate("Country: ", "الدولة : "). $row['country'] . '</div>
+	              <div class="col col-md-6 px-0">' .forceTranslate("End Date: ", "تاريخ النهاية : "). $row['end_date'] . '</div></div>
+	            </div>          
+	          </a>
+	        </div>
+
+
 			';
 	}
 

@@ -13,7 +13,22 @@ $lang = pll_current_language();
 
 $projects = getprojectslats();
 
-
+$projectcurr = true;
+$publications = false;
+$organization = false;
+$currentgetid = '';
+if (isset($_GET['pub'])) {
+    $currentgetid = $_GET['pub'];
+    $projectcurr = false;
+    $currenttab = get_post_type($_GET['pub']);
+    if ($currenttab == 'publication') {
+        $publications = true;
+        $organization = false;
+    } else if ($currenttab == 'organization') {
+        $publications = false;
+        $organization = true;
+    }
+}
 
 ?>
 
@@ -22,7 +37,7 @@ $projects = getprojectslats();
     <div class="csc bordered-shadow">
         <div class="">
             <div class="ratio ratio-16x9">
-                <video id="background-video" autoplay="" playsinline="" loop="" controls="" muted="">
+                <video id="background-video-programs" autoplay="" playsinline="" loop="" controls="" muted="">
                     <source src="<?php print get_site_url(); ?>/wp-content/uploads/2024/02/بوابة-التنمية-الحضرية-العربية-جديد.mp4" type="video/mp4" />
                 </video>
             </div>
@@ -41,61 +56,80 @@ $projects = getprojectslats();
     </p>
 
     <div class="spacer-20"></div>
-    <div class="mi_mobile_grey">
 
-        <center>
-            <p class="fnt-20 fnt-dark-graynt"><b>Contribute by providing information on</b></p>
-        </center>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
 
-        <div class="spacer-20"></div>
+            <div class="mi_mobile_grey">
 
-        <div class="row">
-            <?php if (is_user_logged_in()) { ?>
+                <center>
+                    <p class="fnt-20 remMar fnt-dark-graynt"><b>Contribute by providing information on</b></p>
+                </center>
 
-                <div class="col-12 col-md-3"></div>
+                <div class="spacer-10"></div>
 
-                <div class="col-md-2 mi_w_22">
-                    <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">Cities</a>
+                <div class="row">
+                    <?php if (is_user_logged_in()) { ?>
+
+                        <div class="col-12 col-md-3"></div>
+
+                        <div class="col-md-2 mi_w_22">
+                            <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">Cities</a>
+                        </div>
+
+                        <div class="col-md-2 remPad mi_w_36">
+                            <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">Organizations</a>
+                        </div>
+
+                        <div class="col-md-2 mi_w_36">
+                            <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">Publications</a>
+                        </div>
+
+                        <div class="col-12 col-md-3"></div>
+
+                    <?php } else { ?>
+
+                        <div class="col-12 col-md-3"></div>
+
+                        <div class="col-md-2 mi_w_22">
+                            <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">Cities</a>
+                        </div>
+
+                        <div class="col-md-2 remPad mi_w_36">
+                            <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">Organizations</a>
+                        </div>
+
+                        <div class="col-md-2 mi_w_36">
+                            <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">Publications</a>
+                        </div>
+
+                        <div class="col-12 col-md-3"></div>
+
+                    <?php } ?>
                 </div>
 
-                <div class="col-md-2 mi_w_36">
-                    <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">Organizations</a>
-                </div>
+                <div class="spacer-40"></div>
 
-                <div class="col-md-2 mi_w_36">
-                    <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">Publications</a>
-                </div>
+                <i>
+                    <p class="fnt-18 remMar fnt-dark-graynt text-center">You can read the methodology adopted for the Arab Urban Development Portal on <a href="" class="fnt-blue-light">this link</a>.</p>
 
-                <div class="col-12 col-md-3"></div>
+                    <p class="fnt-18 fnt-dark-graynt remMar text-center">To provide any comment or any complementary information on any of the entries, please write to the following email address: <a href="mailto:infohub@araburban.org" class="fnt-blue-light">infohub@araburban.org</a></p>
 
-            <?php } else { ?>
+                    <p class="fnt-18 fnt-dark-graynt remMar text-center">Please note that including any project, organization, or publication in the Portal does not necessarily mean the endorsement by AUDI of their objectives, positions, or processes.</p>
+                </i>
 
-                <div class="col-12 col-md-3"></div>
+            </div>
 
-                <div class="col-md-2 mi_w_22">
-                    <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">Cities</a>
-                </div>
 
-                <div class="col-md-2 mi_w_36">
-                    <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">Organizations</a>
-                </div>
-
-                <div class="col-md-2 mi_w_36">
-                    <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">Publications</a>
-                </div>
-
-                <div class="col-12 col-md-3"></div>
-
-            <?php } ?>
         </div>
-
-        <div class="spacer-40"></div>
-
-        <p class="fnt-20 fnt-dark-graynt text-center">You can read the methodology adopted for the Arab Urban Development Portal on <a href="" class="fnt-blue">this link</a>.</p>
-
-        <p class="fnt-20 fnt-dark-graynt text-center">To provide any comment or any complementary information on any of the entries, please write to the following email address: <a href="mailto:infohub@araburban.org" class="fnt-blue">infohub@araburban.org</a></p>
-
+        <div class="col-md-2"></div>
     </div>
+
+
+
+
+
 <?php } ?>
 
 <?php if ($lang == "ar") { ?>
@@ -103,7 +137,7 @@ $projects = getprojectslats();
     <div class="csc bordered-shadow">
         <div class="">
             <div class="ratio ratio-16x9">
-                <video id="background-video" autoplay="" playsinline="" loop="" controls="" muted="">
+                <video id="background-videos" autoplay="" playsinline="" loop="" controls="" muted="">
                     <source src="<?php print get_site_url(); ?>/wp-content/uploads/2024/02/audi-infohub-inst-2.mp4" type="video/mp4" />
                 </video>
             </div>
@@ -122,69 +156,85 @@ $projects = getprojectslats();
     </p>
 
     <div class="spacer-20"></div>
-    <div class="mi_mobile_grey">
 
-        <center>
-            <p class="fnt-20 fnt-dark-graynt"><b>ساهم من خلال تقديم معلومات حول</b></p>
-        </center>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
 
-        <div class="spacer-20"></div>
+            <div class="mi_mobile_grey">
 
-        <div class="row">
-            <?php if (is_user_logged_in()) { ?>
+                <center>
+                    <p class="fnt-20 remMar fnt-dark-graynt"><b>ساهم من خلال تقديم معلومات حول</b></p>
+                </center>
 
-                <div class="col-12 col-md-3"></div>
+                <div class="spacer-10"></div>
 
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">المدن</a>
+                <div class="row">
+                    <?php if (is_user_logged_in()) { ?>
+
+                        <div class="col-12 col-md-3"></div>
+
+                        <div class="col col-md-2">
+                            <a href="<?php print home_url(); ?>/infohub/registration/cities" class="btn btn-primary btn-blue w-100">المدن</a>
+                        </div>
+
+                        <div class="col col-md-2 remPad">
+                            <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">المنظمات</a>
+                        </div>
+
+                        <div class="col col-md-2">
+                            <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">المنشورات</a>
+                        </div>
+
+                        <div class="col-12 col-md-3"></div>
+
+                    <?php } else { ?>
+
+                        <div class="col-12 col-md-3"></div>
+
+                        <div class="col col-md-2">
+                            <a href="<?php print home_url(); ?>/infohub-ar/registration/cities" class="btn btn-primary btn-blue w-100">المدن</a>
+                        </div>
+
+                        <div class="col col-md-2 remPad">
+                            <a href="<?php print home_url(); ?>/infohub-ar/registration/organizations" class="btn btn-primary btn-blue w-100">المنظمات</a>
+                        </div>
+
+                        <div class="col col-md-2">
+                            <a href="<?php print home_url(); ?>/infohub-ar/registration/publications" class="btn btn-primary btn-blue w-100">المنشورات</a>
+                        </div>
+
+                        <div class="col-12 col-md-3"></div>
+
+                    <?php } ?>
                 </div>
 
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub/registration/organizations" class="btn btn-primary btn-blue w-100">المنظمات</a>
-                </div>
+                <div class="spacer-40"></div>
 
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub/registration/publications" class="btn btn-primary btn-blue w-100">المنشورات</a>
-                </div>
+                <i>
+                    <p class="fnt-18 fnt-dark-graynt remMar text-center">المنهجية المعتمدة للبوابة العربية للتنمية الحضرية على هذا <a href="" class="fnt-blue-light">الرابط</a>.</p>
 
-                <div class="col-12 col-md-3"></div>
+                    <p class="fnt-18 fnt-dark-graynt remMar text-center">لتقديم أي تعليق أو أية معلومات مكملة حول البيانات المعروضة على المنصة، يرجى الكتابة إلى عنوان البريد اإللكتروني التالي: <a href="mailto:infohub@araburban.org" class="fnt-blue-light">infohub@araburban.org</a></p>
 
-            <?php } else { ?>
+                    <p class="fnt-18 fnt-dark-graynt remMar text-center">تجدر الإشارة إلى أن إدراج أي مشروع، منظمة أو منشور على صفحات البوابة لا يعني بالضرورة تبني المعهد لأهدافهم، مواقفهم، وآليات عملهم</p>
+                </i>
+            </div>
 
-                <div class="col-12 col-md-3"></div>
-
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub-ar/registration/cities" class="btn btn-primary btn-blue w-100">المدن</a>
-                </div>
-
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub-ar/registration/organizations" class="btn btn-primary btn-blue w-100">المنظمات</a>
-                </div>
-
-                <div class="col col-md-2">
-                    <a href="<?php print home_url(); ?>/infohub-ar/registration/publications" class="btn btn-primary btn-blue w-100">المنشورات</a>
-                </div>
-
-                <div class="col-12 col-md-3"></div>
-
-            <?php } ?>
         </div>
-
-        <div class="spacer-40"></div>
-
-        <p class="fnt-20 fnt-dark-graynt text-center">المنهجية المعتمدة للبوابة العربية للتنمية الحضرية على هذا <a href="" class="fnt-blue">الرابط</a>.</p>
-
-        <p class="fnt-20 fnt-dark-graynt text-center">لتقديم أي تعليق أو أية معلومات مكملة حول البيانات المعروضة على المنصة، يرجى الكتابة إلى عنوان البريد اإللكتروني التالي: <a href="mailto:infohub@araburban.org" class="fnt-blue">infohub@araburban.org</a></p>
+        <div class="col-md-2"></div>
     </div>
+
+
+
 <?php } ?>
 
 <div class="spacer-40"></div>
 
 <!--search and tabs-->
 
-<div class="search-tabs">
+<div class="search-tabs" id="returning_back_mi">
     <div class="row align-items-center">
-        <div class="col-md-3">
+        <div class="col-md-3 mi6_desktop">
             <div class="infohub-searchbar shadowed">
                 <form id="searchform" action="" method="post">
                     <div class="infohub-search-bar">
@@ -194,7 +244,7 @@ $projects = getprojectslats();
                                 <i class="fa-solid fa-magnifying-glass infohub-search-btn"></i>
                             </div>
                             <input type="hidden" name="post_type" value="project" />
-                            <div id="search-results" class="d-flex flex-column">
+                            <div id="search-results" class="mi_flex_search">
                                 <div class="col-12" id="search_loader">
                                     <img src="<?php print getPluginDirectory(); ?>img/loader.gif" class="img-fluid" />
                                 </div>
@@ -209,27 +259,28 @@ $projects = getprojectslats();
         </div>
 
         <div class="col-md-8">
+            <!-- /** tabs for search page */ -->
             <ul class="nav nav-tabs nav-pills nav-fill shadowed" id="infohub-tabs">
                 <li class="nav-item">
-                    <button class="nav-link" onClick="getTabsType('cities');" data-bs-toggle="tab" data-bs-target="#infohub-cities-tab">
+                    <button class="nav-link" onClick="getTabsType('cities');" current-tab="cities" data-bs-toggle="tab" data-bs-target="#infohub-cities-tab">
                         <?php print forceTranslate("Cities", "المدن"); ?>
                     </button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="nav-link active" onClick="getTabsType('projects');" data-bs-toggle="tab" data-bs-target="#infohub-projects-tab">
+                    <button class="nav-link <?php echo ($projectcurr) ? 'active' : ''; ?>" onClick="getTabsType('projects');" current-tab="projects" data-bs-toggle="tab" data-bs-target="#infohub-projects-tab">
                         <?php print forceTranslate("Projects", "المشاريع"); ?>
                     </button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="nav-link" onClick="getTabsType('organizations');" data-bs-toggle="tab" data-bs-target="#infohub-organizations-tab">
+                    <button class="nav-link <?php echo ($organization) ? 'active' : ''; ?>" onClick="getTabsType('organizations');" current-tab="organizations" data-bs-toggle="tab" data-bs-target="#infohub-organizations-tab">
                         <?php print forceTranslate("Organizations", "المنظمات"); ?>
                     </button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="nav-link" onClick="getTabsType('publications');" data-bs-toggle="tab" data-bs-target="#infohub-publications-tab">
+                    <button class="nav-link <?php echo ($publications) ? 'active' : ''; ?>" onClick="getTabsType('publications');" current-tab="publications" data-bs-toggle="tab" data-bs-target="#infohub-publications-tab">
                         <?php print forceTranslate("Publications", "المنشورات"); ?>
                     </button>
                 </li>
@@ -238,7 +289,7 @@ $projects = getprojectslats();
             <div class="spacer-20"></div>
         </div>
 
-        <div class="col-md-1">
+        <div class="col-md-1 mi6_desktop">
             <center>
                 <div class="row">
                     <div class="col col-md-12 mobile-view">
@@ -255,6 +306,53 @@ $projects = getprojectslats();
 
                     <div class="col col-md-6">
                         <button id="infohub-view-list" class="btn btn-light btn-none fnt-20 fnt-blue">
+                            <i class="fa-solid fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </center>
+
+            <div class="spacer-20"></div>
+        </div>
+        <!--  *************mobile view*************  -->
+        <div class="col-md-1 mi6_mobile">
+            <center>
+                <div class="row mi6_pd_lr">
+                    <div class="col col-md-2 mobile-view mi6_pd_0 mi6_max_width_15">
+                        <button id="infohub-mobile-filter" class="btn btn-light btn-none fnt-20 fnt-blue mi6_pd_5px" data-bs-toggle="modal" data-bs-target="#infohub-filter-modal">
+                            <i class="fa-solid fa-filter"></i>
+                        </button>
+                    </div>
+                    <div class="col col-md-6 mi6_pd_0">
+                        <div class="infohub-searchbar shadowed">
+                            <form id="searchform-mb" action="" method="post">
+                                <div class="infohub-search-bar">
+                                    <div class="input-group mi6_height_40px">
+                                        <input type="text" name="infohub-search" class="form-control mi6_height_40px" id="infohub-search-mb" placeholder="<?php print forceTranslate("Search", "ابحث"); ?>">
+                                        <div class="input-group-text mi6_pd_5px">
+                                            <i class="fa-solid fa-magnifying-glass infohub-search-btn"></i>
+                                        </div>
+                                        <input type="hidden" name="post_type" value="project" />
+                                        <div id="search-results-mb" class="mi_flex_search">
+                                            <div class="col-12 mi6_hide" id="search_loader_mb">
+                                                <img src="<?php print getPluginDirectory(); ?>img/loader.gif" class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="submit" value="Submit" class="d-none">
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2 mi6_pd_0 mi6_max_width_15">
+                        <button id="infohub-view-map-mb" class="btn btn-light btn-none fnt-20 fnt-blue mi6_pd_5px">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </button>
+                    </div>
+
+                    <div class="col col-md-2 mi6_pd_0 mi6_max_width_15">
+                        <button id="infohub-view-list-mb" class="btn btn-light btn-none fnt-20 fnt-blue mi6_pd_5px">
                             <i class="fa-solid fa-list"></i>
                         </button>
                     </div>
@@ -381,7 +479,21 @@ $projects = getprojectslats();
                             </select>
 
                             <select name="filter-organizations-type[]" id="filter-organizations-type" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Organization Type", "نوع المنظمة"); ?>">
-                                <?php print getSelectOptionList("organization", "type_of_organization", "type_of_organization", "field_65a91c579143a"); ?>
+                                <!-- <?php print getSelectOptionList("organization", "type_of_organization", "type_of_organization", "field_65a91c579143a"); ?> -->
+                                <?php
+                                $orgtype = get_field_object('field_65a91c579143a');
+                                $others = $orgtype['choices']['1659'];
+                                unset($orgtype['choices']['1659']);
+                                $orgtype['choices']['1659'] = $others;
+
+                                if ($orgtype['choices']) {
+                                    foreach ($orgtype['choices'] as $value => $label) {
+                                        if ($value != 0) {
+                                            echo "<option value='$value'>$label</option>";
+                                        }
+                                    }
+                                }
+                                ?>
                             </select>
 
                             <select name="filter-organizations-areas[]" id="filter-organizations-areas" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Areas of Intervention", "مجالات التدخل"); ?>">
@@ -517,7 +629,7 @@ $projects = getprojectslats();
                     </div>
                 </div>
 
-                <div id="infohub-projects-tab" class="tab-pane fade show active">
+                <div id="infohub-projects-tab" class="tab-pane fade   <?php echo ($projectcurr) ? " show active " : ''; ?>">
                     <div class="infohub-loader hideThis">
                         <div class="row">
                             <div class="col-5"></div>
@@ -533,7 +645,8 @@ $projects = getprojectslats();
                     </div>
 
                     <div class="infohub-list">
-                        <?php echo do_shortcode("[projects]"); ?>
+
+                        <?php echo ($projectcurr) ? do_shortcode("[projects]") : ''; ?>
                     </div>
 
                     <div class="spacer-40"></div>
@@ -567,7 +680,7 @@ $projects = getprojectslats();
                     </div>
                 </div>
 
-                <div id="infohub-organizations-tab" class="tab-pane fade">
+                <div id="infohub-organizations-tab" class="tab-pane fade <?php echo ($organization) ? "show active" : ''; ?>">
                     <div class="infohub-loader hideThis">
                         <div class="row">
                             <div class="col-5"></div>
@@ -582,7 +695,7 @@ $projects = getprojectslats();
                         <center></center>
                     </div>
 
-                    <div class="infohub-list"></div>
+                    <div class="infohub-list"> <?php echo do_shortcode("[organization_research id=$currentgetid ]"); ?> </div>
 
                     <div class="spacer-40"></div>
 
@@ -615,7 +728,7 @@ $projects = getprojectslats();
                     </div>
                 </div>
 
-                <div id="infohub-publications-tab" class="tab-pane fade">
+                <div id="infohub-publications-tab" class="tab-pane fade  <?php echo ($publications) ? "show active" : ''; ?>">
                     <div class="infohub-loader hideThis">
                         <div class="row">
                             <div class="col-5"></div>
@@ -636,7 +749,10 @@ $projects = getprojectslats();
 
                     </div> -->
 
-                    <div class="infohub-list"></div>
+                    <div class="infohub-list">
+
+                        <?php echo do_shortcode("[publications_research id=$currentgetid ]"); ?>
+                    </div>
 
                     <div class="spacer-40"></div>
 
@@ -706,8 +822,8 @@ $projects = getprojectslats();
                             </div>
 
                             <div class="infohub-filter-body">
-                                <form id="infohub-cities-tab-filter-form-mobile " action="" method="post">
-                                    <select name="filter-cities-country[]" id="filter-cities-country" onchange="getCountry('filter-cities-country');" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Country", "الدولة"); ?>">
+                                <form id="infohub-cities-tab-filter-form-mobile" action="" method="post">
+                                    <select name="filter-cities-country[]" id="filter-cities-country-mobile" onchange="getCountry('filter-cities-country-mobile');" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Country", "الدولة"); ?>">
                                         <?php print getSelectOptionList("city", "country", "country", "field_65070d4d2ac3c"); ?>
                                     </select>
 
@@ -744,7 +860,7 @@ $projects = getprojectslats();
 
                             <div class="infohub-filter-body">
                                 <form id="infohub-projects-tab-filter-form-mobile" action="" method="post">
-                                    <select name="filter-projects-country[]" id="filter-projects-country" onchange="getCountry('filter-projects-country');" class="form-control selectpicker" data-live-search="true" title="<?php print forceTranslate("Country", "الدولة"); ?>" multiple>
+                                    <select name="filter-projects-country[]" id="filter-projects-country-mobile" onchange="getCountry('filter-projects-country-mobile');" class="form-control selectpicker" data-live-search="true" title="<?php print forceTranslate("Country", "الدولة"); ?>" multiple>
                                         <?php print getSelectOptionList("project", "section_1", "country", "field_65a8f63a545a8"); ?>
                                     </select>
 
@@ -784,7 +900,7 @@ $projects = getprojectslats();
 
                             <div class="infohub-filter-body">
                                 <form id="infohub-organizations-tab-filter-form-mobile" action="" method="post">
-                                    <select name="filter-organizations-country[]" id="filter-organizations-country" onchange="getCountry('filter-organizations-country');" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Country", "بلد المنظمة"); ?>">
+                                    <select name="filter-organizations-country[]" id="filter-organizations-country-mobile" onchange="getCountry('filter-organizations-country-mobile');" class="form-control selectpicker" data-live-search="true" multiple title="<?php print forceTranslate("Country", "بلد المنظمة"); ?>">
                                         <?php print getSelectOptionList("organization", "organization_country", "country", "field_65a91c8b9143b"); ?>
                                     </select>
 
@@ -879,6 +995,51 @@ $projects = getprojectslats();
 <script>
     jQuery(document).ready(function() {
 
+        // jQuery('html, body').animate({
+        //     scrollTop: jQuery('#returning_back_mi').offset().top
+        // }, 1000);
+        // const scroll = new LocomotiveScroll({
+        //     el: document.querySelector('[data-scroll-container]'),
+        //     smooth: true // Enable smooth scrolling
+        // });
+
+        // Function to scroll to a specific element
+  
+        // Scroll to an element with ID "scrollToThis" when the document is ready
+        // document.addEventListener('DOMContentLoaded', function() {
+         
+        // });
+        // const scroller = new LocomotiveScroll({
+        //     el: document.querySelector("[data-scroll-container]"),
+
+        //     smooth: true,
+        // });
+        // scroller.scrollTo("#returning_back_mi");
+        // const queryString = window.location.search;
+
+        // const urlParams = new URLSearchParams(queryString);
+
+        // const product = urlParams.get('pub');
+
+        // if(product){
+        //     jQuery.ajax({
+        //     type: 'POST',
+        //     url: '/wp-admin/admin-ajax.php',
+        //     data: {
+        //         action: 'showpublications',
+        //         pub: product
+        //     },
+        //     success: function(response) {
+        //        console.log(response);
+        //     },
+        //     error: function(xhr, status, error) {
+        //         console.error("AJAX Error:", status, error);
+        //     }
+        // });
+        // }
+
+
+
         jQuery("#infohub-view-map").on("click touch", function() {
 
             jQuery(".list-view").fadeOut(600);
@@ -907,13 +1068,29 @@ $projects = getprojectslats();
             //map.remove();
 
         });
+        //jQuery(".mi6_hide").hide();
         jQuery("#search_loader").hide();
+        jQuery("#searchform").on("submit", function(e) {
+            e.preventDefault();
+            jQuery("#infohub-search").trigger("keyup");
+        })
         jQuery("#infohub-search").keyup(function(e) {
             e.preventDefault();
             jQuery("#search_loader").show();
+            var currentlangedk = "<?php echo $lang; ?>";
 
-            var form = jQuery(this).val();
-            var tabsr = jQuery("#infohub-tabs").find(".active").text().toLowerCase().trim();
+            var form = jQuery(this).val().toLowerCase();
+            var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+            localStorage.setItem("search_tabs", form);
+            if (form == '') {
+                if (tabsr == 'organizations' || tabsr == 'publications') {
+                    jQuery("#infohub-tabs").find(".active").trigger("click");
+                }
+                jQuery("#search-results").hide();
+                jQuery("#search-results").html('');
+                return;
+            }
+
             // var fd = new FormData(form[0]);
             // fd.append("tabs", tabs);
             // fd.append("action", "searchProj");
@@ -929,20 +1106,48 @@ $projects = getprojectslats();
                     tabs: tabsr
                 },
                 success: function(projects) {
-                    console.log(JSON.parse(projects)); 
-                    jQuery("#search_loader").hide();
+                    var filteredProjects;
+                    jQuery("#search-results").show();
+                    if (currentlangedk == 'en') {
+                        filteredProjects = JSON.parse(projects).filter(project => {
+                            console.log(project.name);
+                            const projectName = (project.name == '') ? project.name : project.name.toLowerCase();
+                            return projectName.includes(form);
+                        });
+                        console.log(currentlangedk);
 
-                    const inputText = form.toLowerCase();
-                    const filteredProjects = JSON.parse(projects).filter(project => {
-                        const projectName = project.name.toLowerCase();
-                        return projectName.includes(inputText);
-                    });
+                    } else {
+                        filteredProjects = JSON.parse(projects).filter(project => {
+                            const projectName = (project.name_ar) != '' ? project.name_ar.toLowerCase() : project.name_ar;
+                            return projectName.includes(form);
+                        });
+                        console.log(currentlangedk);
+                    }
 
-                    console.log(filteredProjects);
-                    outputElement.innerHTML = ''; // Clear the output element
-                    filteredProjects.forEach(project => {
-                        outputElement.insertAdjacentHTML('beforeend', `<a href="${project.link}" class="p-2 searchitem">${project.name}</a>`); // Replace 'project.name' with the property you want to display
-                    });
+
+                    var localitem = localStorage.getItem("search_tabs");
+
+                    if (localitem != "") {
+
+                        outputElement.innerHTML = '';
+                        if (filteredProjects.length > 0) {
+                            filteredProjects.forEach(project => {
+                                if (currentlangedk == 'en') {
+                                    outputElement.insertAdjacentHTML('beforeend', `<a href="${project.link}" post-id="${project.postid}"  class="p-2 searchitem">${project.name}</a>`);
+                                } else {
+                                    outputElement.insertAdjacentHTML('beforeend', `<a href="${project.link}"  post-id="${project.postid}"  class="p-2 searchitem">${project.name_ar}</a>`);
+
+                                }
+                            });
+                        } else {
+                            if (currentlangedk == 'en') {
+                                outputElement.insertAdjacentHTML('beforeend', `<p class="p-2 searchitem">No Result found!</p>`);
+                            } else {
+                                outputElement.insertAdjacentHTML('beforeend', `<p  class="p-2 searchitem">لم يتم العثور على نتائج!</p>`);
+
+                            }
+                        }
+                    }
 
                 },
                 error: function(xhr, status, error) {
@@ -950,6 +1155,212 @@ $projects = getprojectslats();
                 }
             });
         });
+        // mobile search options
+        jQuery("#infohub-view-map-mb").on("click touch", function() {
+
+            jQuery(".list-view").fadeOut(600);
+            jQuery(".map-view").fadeIn(600);
+            jQuery(".loadMore").addClass("hideThis");
+
+            var getMapId = jQuery(".tab-pane.active .infohub-map").attr("id");
+
+            if (getMapId == "infohub-projects-map") {
+                var markerarray = <?php echo json_encode($projects); ?>;
+                runMap(getMapId, markerarray);
+            }
+
+            if (getMapId == "infohub-cities-map") {
+                runCityMap(getMapId);
+            }
+
+        });
+
+        jQuery("#infohub-view-list-mb").on("click touch", function() {
+
+            jQuery(".list-view").fadeIn(600);
+            jQuery(".map-view").fadeOut(600);
+            jQuery(".loadMore").removeClass("hideThis");
+            //map.off();
+            //map.remove();
+
+        });
+
+
+        jQuery("#search_loader_mb").hide();
+        jQuery("#searchform-mb").on("submit", function(e) {
+            e.preventDefault();
+            jQuery("#infohub-search-mb").trigger("keyup");
+        })
+        jQuery("#infohub-search-mb").keyup(function(e) {
+            e.preventDefault();
+            jQuery("#search_loader_mb").show();
+            var currentlange = "<?php echo $lang; ?>";
+            var form = jQuery(this).val().toLowerCase();
+            localStorage.setItem("search_tabs_mb", form);
+            var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+            // var fd = new FormData(form[0]);
+            // fd.append("tabs", tabs);
+            // fd.append("action", "searchProj");
+            const outputElement = document.getElementById("search-results-mb"); // Replace with the ID of your output element
+            console.log(form);
+            if (form == '') {
+                if (tabsr == 'organizations' || tabsr == 'publications') {
+                    jQuery("#infohub-tabs").find(".active").trigger("click");
+                }
+                jQuery("#search-results-mb").hide();
+                jQuery("#search-results-mb").html('');
+                return;
+            }
+            jQuery.ajax({
+                type: "POST",
+                url: "/wp-admin/admin-ajax.php",
+                data: {
+                    action: 'searchProj',
+                    datas: form,
+                    tabs: tabsr
+                },
+                success: function(projects) {
+
+                    //console.log(projects)
+                    console.log(tabsr);
+                    jQuery("#search_loader").hide();
+                    jQuery("#search-results-mb").show();
+                    const inputText = form.toLowerCase();
+                    var filteredProjects;
+                    console.log("noncity");
+                    if (currentlange == 'en') {
+                        filteredProjects = JSON.parse(projects).filter(project => {
+                            const projectName = (project.name != '') ? project.name.toLowerCase() : project.name;;
+                            return projectName.includes(inputText);
+                        });
+                        console.log(currentlange);
+
+                    } else {
+                        filteredProjects = JSON.parse(projects).filter(project => {
+                            const projectName = (project.name_ar != '') ? project.name_ar.toLowerCase() : project.name_ar;
+                            return projectName.includes(inputText);
+                        });
+                        console.log(currentlange);
+                    }
+
+                    outputElement.innerHTML = '';
+                    if (localStorage.getItem('search_tabs_mb') != '') {
+                        if (filteredProjects.length > 0) {
+                            filteredProjects.forEach(project => {
+                                if (currentlange == 'en') {
+                                    outputElement.insertAdjacentHTML('beforeend', `<a href="${project.link}" post-id="${project.postid}"  class="p-2 searchitem">${project.name}</a>`);
+                                } else {
+                                    outputElement.insertAdjacentHTML('beforeend', `<a href="${project.link}"  post-id="${project.postid}"  class="p-2 searchitem">${project.name_ar}</a>`);
+
+                                }
+                            });
+                        } else {
+                            if (currentlange == 'en') {
+                                outputElement.insertAdjacentHTML('beforeend', `<p class="p-2 searchitem">No Result found!</p>`);
+                            } else {
+                                outputElement.insertAdjacentHTML('beforeend', `<p  class="p-2 searchitem">لم يتم العثور على نتائج!</p>`);
+
+                            }
+                        }
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+        });
+
+
+        jQuery("#search-results").on("click", "a", function(e) {
+
+
+            // e.preventDefault();
+
+            var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+            if (tabsr != "cities" && tabsr != "projects") {
+                e.preventDefault();
+                jQuery("#search-results").hide();
+                jQuery(".infohub-loader").removeClass("hideThis");
+                var currentlange = "<?php echo $lang; ?>";
+                var form = jQuery(this).attr("post-id");
+                // var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+                // var fd = new FormData(form[0]);
+                // fd.append("tabs", tabs);
+                // fd.append("action", "searchProj");
+                // const outputElement = document.getElementById("search-results-mb"); // Replace with the ID of your output element
+                console.log(form);
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/wp-admin/admin-ajax.php",
+                    data: {
+                        action: 'searchresultsposts',
+                        datas: form,
+                        tabs: tabsr
+                    },
+                    success: function(projects) {
+                        jQuery("#search_loader").hide();
+                        jQuery(".infohub-loader").addClass("hideThis");
+                        if (tabsr == "organizations") {
+                            jQuery("#organization-list").find("#infohub-accordion").html(projects);
+                        } else if (tabsr == "publications") {
+                            jQuery("#publication-list").find("#infohub-accordion").html(projects);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                    }
+                });
+            };
+        })
+        jQuery("#search-results-mb").on("click", "a", function(e) {
+
+            // e.preventDefault();
+            jQuery("#search-results-mb").hide();
+
+            var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+            if (tabsr != "cities" && tabsr != "projects") {
+                e.preventDefault();
+                jQuery("#search-results-mb").hide();
+                jQuery("#search_loader_mb").show();
+
+                jQuery(".infohub-loader").removeClass("hideThis");
+                var currentlange = "<?php echo $lang; ?>";
+                var form = jQuery(this).attr("post-id");
+                // var tabsr = jQuery("#infohub-tabs").find(".active").attr('current-tab').toLowerCase().trim();
+                // var fd = new FormData(form[0]);
+                // fd.append("tabs", tabs);
+                // fd.append("action", "searchProj");
+                // const outputElement = document.getElementById("search-results-mb"); // Replace with the ID of your output element
+                console.log(form);
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/wp-admin/admin-ajax.php",
+                    data: {
+                        action: 'searchresultsposts',
+                        datas: form,
+                        tabs: tabsr
+                    },
+                    success: function(projects) {
+
+                        jQuery("#search_loader").hide();
+
+                        jQuery(".infohub-loader").addClass("hideThis");
+                        if (tabsr == "organizations") {
+                            jQuery("#organization-list").find("#infohub-accordion").html(projects);
+                        } else if (tabsr == "publications") {
+                            jQuery("#publication-list").find("#infohub-accordion").html(projects);
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                    }
+                });
+            };
+        })
 
     });
 
@@ -965,7 +1376,11 @@ $projects = getprojectslats();
         jQuery("#infohub-" + id + "-tab .infohub-loader").removeClass("hideThis");
 
         //console.log(id);
+        jQuery("#search-results").hide();
+        jQuery("#search-results").html('');
 
+        jQuery("#search-results-mb").hide();
+        jQuery("#search-results-mb").html('');
         var fd = new FormData();
         fd.append("action", "infohubListAjax");
         fd.append("data", id);
@@ -983,11 +1398,15 @@ $projects = getprojectslats();
 
                     jQuery("#infohub-view-map").fadeOut(400);
                     jQuery("#infohub-view-list").fadeOut(400);
+                    jQuery("#infohub-view-map-mb").fadeOut(400);
+                    jQuery("#infohub-view-list-mb").fadeOut(400);
 
                 } else {
 
                     jQuery("#infohub-view-map").fadeIn(400);
                     jQuery("#infohub-view-list").fadeIn(400);
+                    jQuery("#infohub-view-map-mb").fadeIn(400);
+                    jQuery("#infohub-view-list-mb").fadeIn(400);
 
                 }
 
@@ -1085,6 +1504,7 @@ $projects = getprojectslats();
     function getCountry(selectId) {
 
         var getVal = jQuery("#" + selectId + "").val();
+        console.log(getVal);
         var fd = new FormData();
         fd.append("action", "getCitySelect");
         fd.append("data", getVal);
@@ -1144,7 +1564,6 @@ $projects = getprojectslats();
             fd.append("data", filterPost);
 
 
-
             jQuery.ajax({
                 type: "POST",
                 url: "/wp-admin/admin-ajax.php",
@@ -1195,11 +1614,6 @@ $projects = getprojectslats();
 
 
     }
-
-
-
-
-
 
 
 
@@ -1322,7 +1736,7 @@ $projects = getprojectslats();
                     }),
                 });
                 marker.bindPopup(
-                    '<a href="' + markerData.postlink + '" target="_blank"><h3>' + markerData.title + "</h3> <h6>" + markerData.city + "," + markerData.country + "</h6><p>" + markerData.startdate + "-" + markerData.enddate + "</p></a>"
+                    '<a href="' + markerData.postlink + '" target="_blank"><h3>' + markerData.title + "</h3> <h6>" + markerData.city + ", " + markerData.country + "</h6><p>" + markerData.startdate + " - " + markerData.enddate + "</p></a>"
                 );
 
                 markers.addLayer(marker);

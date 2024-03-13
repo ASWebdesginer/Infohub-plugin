@@ -569,10 +569,13 @@ function handle_form_submission()
 {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['publictitlearabic'])) {
 		publication_posting();
-	} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['organizationtitleenglish'])) {
+	} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['organizationtitleenglish']) && wp_verify_nonce( $_POST['my_organization_attachment_nonce'], 'my_organization_attachment_nonce' )) {
 		organization_posting();
+	}else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name-authority']) && wp_verify_nonce( $_POST['my_update_attachment_nonce'], 'my_update_attachment_nonce' )){
+		city_posting();
 	}
 }
+add_action('init', 'handle_form_submission');
 // Function to handle the file upload and set it as the featured image
 function upload_featured_image($file, $post_id)
 {
@@ -581,7 +584,14 @@ function upload_featured_image($file, $post_id)
 	return $attachment_id;
 }
 
-add_action('init', 'handle_form_submission');
+function upload_featured_image_acf($file, $post_id)
+{
+	require_once(ABSPATH . 'wp-admin/includes/admin.php');
+	$attachment_id = media_handle_upload($file, $post_id);
+	return $attachment_id;
+}
+
+
 
 // // Function to handle the file upload and set it as the featured image
 // function upload_featured_image( $file, $post_id ) {
@@ -612,7 +622,7 @@ function publication_posting()
 	$publiclinkfr = sanitize_text_field($_POST['publiclinkfr']);
 	$datepickerpost = sanitize_text_field($_POST['datepickerpost']);
 	$publicationtype = sanitize_text_field($_POST['publicationtype']);
-	$publicationtheme = sanitize_text_field($_POST['publicationtheme']);
+	$publicationtheme = $_POST['publicationtheme'];
 	$puborganizationnameeng = sanitize_text_field($_POST['puborganizationnameeng']);
 	$puborganizationnamear = sanitize_text_field($_POST['puborganizationnamear']);
 	$puborganizationtype = sanitize_text_field($_POST['puborganizationtype']);
@@ -630,7 +640,7 @@ function publication_posting()
 	$post_data = array(
 		'post_title' => $public_title_english,
 		'post_content' => '', // You can add content here if needed
-		'post_status' => 'publish',
+		'post_status' => 'draft',
 		'post_type' => 'publication', // Change this to your custom post type if needed
 	);
 
@@ -642,7 +652,7 @@ function publication_posting()
 	$post_data = array(
 		'post_title' => $public_title_arabic,
 		'post_content' => '', // You can add content here if needed
-		'post_status' => 'publish',
+		'post_status' => 'draft',
 		'post_type' => 'publication', // Change this to your custom post type if needed
 	);
 	$post_idAr = wp_insert_post($post_data);
@@ -688,11 +698,22 @@ function publication_posting()
 			}
 		}
 	}
+	else{
+		$redirect_url=home_url();
+		wp_redirect($redirect_url);
+		exit();
+	}
 	if (isset($_FILES['imagefiles'])) {
 		$file = $_FILES['imagefiles'];
 		$attachment_id = upload_featured_image($file, $post_id);
 		set_post_thumbnail($post_id, $attachment_id);
 	}
+
+	if(isset($_FILES['image_ar'])) {
+		$file = $_FILES['image_ar'];
+		$attachment_id = upload_featured_image_acf($file, $post_id);
+		update_field('field_65e0aa7664bac', $attachment_id,$post_id);
+	 }
 
 	if ($new_city && $new_city !== '') {
 		$link = get_permalink($post_id);
@@ -735,50 +756,53 @@ function organization_posting()
 		$new_city = sanitize_text_field($_POST['nonregionurbanproject']);
 	}
 
-	$organ_title_arabic = sanitize_text_field($_POST['organizationtitlearabic']);
-	$organenglishaddress = sanitize_text_field($_POST['organenglishaddress']);
-	$organarabaddress = sanitize_text_field($_POST['organarabaddress']);
+	$organ_title_arabic = isset($_POST['organizationtitlearabic']) ? $_POST['organizationtitlearabic'] : '';
+	$organenglishaddress =isset($_POST['organenglishaddress']) ? $_POST['organenglishaddress'] : '';
+	$organarabaddress = isset($_POST['organarabaddress']) ? $_POST['organarabaddress'] : '';
 
-	$organiznumber = sanitize_text_field($_POST['organiznumber']);
-	$organizationemail = sanitize_text_field($_POST['organizationemail']);
-	$organizwebsitelink = sanitize_text_field($_POST['organizwebsitelink']);
-	$organizationtype = sanitize_text_field($_POST['organizationtype']);
-	$organizationcountry = sanitize_text_field($_POST['organizationcountry']);
-	$yearofestaborgan = sanitize_text_field($_POST['yearofestaborgan']);
-	$numofemployee = sanitize_text_field($_POST['numofemployee']);
+	$organiznumber = isset($_POST['organiznumber']) ? $_POST['organiznumber'] : '';
+	$organizationemail = isset($_POST['organizationemail']) ? $_POST['organizationemail'] : '';
+	$organizwebsitelink =  isset($_POST['organizwebsitelink']) ? $_POST['organizwebsitelink'] : '';
+	$organizationtype = isset($_POST['organizationtype']) ? $_POST['organizationtype'] : '';
+	$organizationcountry = isset($_POST['organizationcountry']) ? $_POST['organizationcountry'] : '';
+	$yearofestaborgan = isset($_POST['yearofestaborgan']) ? $_POST['yearofestaborgan'] : '';
+	$numofemployee = isset($_POST['numofemployee']) ? $_POST['numofemployee'] : '';
 
-	$organiztotalbudget = sanitize_text_field($_POST['organiztotalbudget']);
-	$typeofinterv = sanitize_text_field($_POST['typeofinterv']);
-	$areaofinterv = sanitize_text_field($_POST['areaofinterv']);
-	$geoofinterv = sanitize_text_field($_POST['geoofinterv']);
-	$facebooklink = sanitize_text_field($_POST['organizfacebook']);
-	$twitterlink = sanitize_text_field($_POST['organiztwitter']);
-	$instagramlink = sanitize_text_field($_POST['organizinstagram']);
-	$linkedinlink = sanitize_text_field($_POST['organizlinkedin']);
-	$whatsapplink = sanitize_text_field($_POST['organizwhatsapp']);
+	$organiztotalbudget = isset($_POST['organiztotalbudget']) ? $_POST['organiztotalbudget'] : '';
+	$typeofinterv = isset($_POST['typeofinterv']) ? $_POST['typeofinterv'] : '';
+	$areaofinterv = isset($_POST['areaofinterv']) ? $_POST['areaofinterv'] : '';
+	$geoofinterv = isset($_POST['geoofinterv']) ? $_POST['geoofinterv'] : ''; 
+	$facebooklink = isset($_POST['organizfacebook']) ? $_POST['organizfacebook'] : '';
+	$twitterlink = isset($_POST['organiztwitter']) ? $_POST['organiztwitter'] : '';
+	$instagramlink = isset($_POST['organizinstagram']) ? $_POST['organizinstagram'] : '';
+	$linkedinlink = isset($_POST['organizlinkedin']) ? $_POST['organizlinkedin'] : '';
+	$whatsapplink = isset($_POST['organizwhatsapp']) ? $_POST['organizwhatsapp'] : '';
 
 	$post_data = array(
 		'post_title' => $organ_title_english,
 		'post_content' => '', // You can add content here if needed
-		'post_status' => 'publish',
+		'post_status' => 'draft',
 		'post_type' => 'organization', // Change this to your custom post type if needed
 	);
 
 	// Insert the post into the database
 	$post_id = wp_insert_post($post_data);
-	$language_code = 'en'; // Replace 'fr' with the language code you want to assign (e.g., 'en', 'es', 'de')
-	pll_set_post_language($post_id, $language_code);
+
+	// $language_code = 'en'; // Replace 'fr' with the language code you want to assign (e.g., 'en', 'es', 'de')
+	// pll_set_post_language($post_id, $language_code);
 
 	$post_data = array(
 		'post_title' => $organ_title_arabic,
 		'post_content' => '', // You can add content here if needed
-		'post_status' => 'publish',
+		'post_status' => 'draft',
 		'post_type' => 'publication', // Change this to your custom post type if needed
 	);
 	$post_idAr = wp_insert_post($post_data);
+
+
 	$language_code = 'ar'; // Replace 'fr' with the language code you want to assign (e.g., 'en', 'es', 'de')
-	pll_set_post_language($post_idAr, $language_code);
-	pll_save_post_translations(array('en' => $post_id, 'ar' => $post_idAr));
+	// pll_set_post_language($post_idAr, $language_code);
+	// pll_save_post_translations(array('en' => $post_id, 'ar' => $post_idAr));
 
 	if ($post_id) {
 		updatepostdata('org_name_en', $organ_title_english, $post_id);
@@ -788,18 +812,18 @@ function organization_posting()
 		updatepostdata('organization_country', $organizationcountry, $post_id);
 		// updatepostdata('city', $organcity, $post_id);
 
-		if ($organcity !== '') {
-			$citylang = pll_get_post_language($organcity);
-			if ($citylang == 'en') {
-				update_field('city', $organcity, $post_id);
-				$arabic_city = pll_get_post_translations($organcity);
-				update_field('city', $arabic_city['ar'], $post_idAr);
-			} else {
-				update_field('city', $organcity, $post_idAr);
-				$arabic_city = pll_get_post_translations($organcity);
-				update_field('city', $arabic_city['en'], $post_id);
-			}
-		}
+		// if ($organcity !== '') {
+		// 	$citylang = pll_get_post_language($organcity);
+		// 	if ($citylang == 'en') {
+		// 		update_field('city', $organcity, $post_id);
+		// 		$arabic_city = pll_get_post_translations($organcity);
+		// 		update_field('city', $arabic_city['ar'], $post_idAr);
+		// 	} else {
+		// 		update_field('city', $organcity, $post_idAr);
+		// 		$arabic_city = pll_get_post_translations($organcity);
+		// 		update_field('city', $arabic_city['en'], $post_id);
+		// 	}
+		// }
 
 
 
@@ -856,20 +880,268 @@ function organization_posting()
 	exit();
 }
 
+function city_posting()
+{
+
+	// Sanitize and save the submitted data
+	$organ_country = sanitize_text_field($_POST['country']);
+	$organcity = '';
+	$new_city="";
+	if (isset($_POST['city']) && !empty($_POST['city'])) {
+		$organcity =get_the_title($_POST['city']);
+	}else{
+		$organcity = '';
+	}
+	if (isset($_POST['city-others']) && !empty($_POST['city-others'])) {
+		$new_city = sanitize_text_field($_POST['city-others']);
+	}else{
+		$new_city="";
+	}
+
+	$name_authority = sanitize_text_field($_POST['name-authority']);
+	$website = sanitize_text_field($_POST['website']);
+	$geo_status = sanitize_text_field($_POST['geo-status']);
+
+	$city_size = sanitize_text_field($_POST['city-size']);
+	$demo_status = sanitize_text_field($_POST['demo-status']);
+	$envi_status = sanitize_text_field($_POST['envi-status']);
+	$econi_status = sanitize_text_field($_POST['econi-status']);
+	$housing_status = sanitize_text_field($_POST['housing-status']);
+	$mobil_status = sanitize_text_field($_POST['mobil-status']);
+     
+	$facebooklink = sanitize_text_field($_POST['social-link-1']);
+	$twitterlink = sanitize_text_field($_POST['social-link-2']);
+	$instagramlink = sanitize_text_field($_POST['social-link-3']);
+	$youtubelink = sanitize_text_field($_POST['social-link-4']);
+	$linkedinlink = sanitize_text_field($_POST['social-link-5']);
+
+	$post_data = array(
+		'post_title' => $organcity,
+		'post_content' => '', // You can add content here if needed
+		'post_status' => 'draft',
+		'post_type' => 'city', // Change this to your custom post type if needed
+	);
+
+	// Insert the post into the database
+	$post_id = wp_insert_post($post_data);
+	$language_code = 'en'; // Replace 'fr' with the language code you want to assign (e.g., 'en', 'es', 'de')
+	pll_set_post_language($post_id, $language_code);
+
+	$post_data = array(
+		'post_title' => $organcity,
+		'post_content' => '', // You can add content here if needed
+		'post_status' => 'draft',
+		'post_type' => 'city', // Change this to your custom post type if needed
+	);
+	$post_idAr = wp_insert_post($post_data);
+	$language_code = 'ar'; // Replace 'fr' with the language code you want to assign (e.g., 'en', 'es', 'de')
+	pll_set_post_language($post_idAr, $language_code);
+	pll_save_post_translations(array('en' => $post_id, 'ar' => $post_idAr));
+
+	if ($post_id) {
+
+		
+		$uploaded_file = $_FILES['boundary'];
+
+		for ($i = 1; $i < 5; $i++) {
+			$file_key = 'city-img' . $i;
+			if (isset($_FILES[$file_key])) {
+				$file = $_FILES[$file_key];
+				$attachment_id = upload_featured_image_acf($file_key, $post_id);
+				$city_title = isset($_POST['city-title' . $i]) ? $_POST['city-title' . $i] : "";
+				$city_source = isset($_POST['city-source' . $i]) ? $_POST['city-source' . $i] : "";
+				$group_data = array(
+					"city_photo_$i" => $attachment_id,
+					"city_photo_title_$i" => $city_title,
+					"city_photo_link_$i" => $city_source,
+				);
+				update_field("city_gallery", $group_data, $post_id);
+				update_field("city_gallery", $group_data, $post_idAr);
+			}
+		}
+		
+
+
+		updatepostdata('country', $organ_country, $post_id);
+		updatepostdata('name_authority', $name_authority, $post_id);
+		updatepostdata('website', $website, $post_id);
+		updatepostdata('demographic', $demo_status, $post_id);
+		updatepostdata('environmental', $envi_status, $post_id);
+		updatepostdata('economic', $econi_status, $post_id);
+		updatepostdata('housing', $housing_status, $post_id);
+		updatepostdata('geo', $geo_status, $post_id);
+		updatepostdata('transport', $mobil_status, $post_id);
+		updatepostdata('city_size', $city_size, $post_id);
+
+		
+		updatesocailfields('social_media_type_1', 1, $post_id);
+		updatesocailfields('social_media_link_1', $facebooklink, $post_id);
+
+		updatesocailfields('social_media_type_2', 2, $post_id);
+		updatesocailfields('social_media_link_2', $twitterlink, $post_id);
+
+		updatesocailfields('social_media_type_3', 3, $post_id);
+		updatesocailfields('social_media_link_3', $instagramlink, $post_id);
+
+		updatesocailfields('social_media_type_4', 7, $post_id);
+		updatesocailfields('social_media_link_4', $youtubelink, $post_id);
+
+		updatesocailfields('social_media_type_5', 6, $post_id);
+		updatesocailfields('social_media_link_5', $linkedinlink, $post_id);
+		// update_image_fields('boundary', $post_id);
+		// updatepostdata('geography_of_intervention', $geoofinterv, $post_id);
+
+		if (isset($_FILES['boundary'])) {
+			$file = $_FILES['boundary'];
+			$attachment_id = upload_featured_image_acf('boundary', $post_id);
+			update_field('boundary', $attachment_id, $post_id);
+			update_field('boundary', $attachment_id, $post_idAr);
+		}
+
+	}
+
+	if ($new_city && $new_city !== '') {
+		$link = get_permalink($post_id);
+		$to = get_option('admin_email');
+		$subject = 'New City Requested';
+		$message = "New City Requested $new_city for Organization link of $link";
+		$headers = array('Content-Type: text/html; charset=utf-8');
+		$mymailstatus = wp_mail($to, $subject, $message, $headers);
+	}
+	// Add a status parameter to the URL
+	if (pll_current_language() == 'en') {
+		$redirect_url =  home_url('/en/infohub/c-form/?status=success');
+	} else {
+		$redirect_url =  home_url('/infohub-ar/c-form/?status=success');
+	}
+	// Optionally, redirect after submission
+	wp_redirect($redirect_url);
+	exit();
+}
+
+
 function updatepostdata($field, $value, $postid)
 {
 	if (!empty($value)) {
+		
 		update_field($field, $value, $postid);
 		$arabic_city = pll_get_post_translations($postid);
-		update_field($field, $value, $arabic_city['ar']);
+		if(!empty($arabic_city['ar'])){
+			update_field($field, $value, $arabic_city['ar']);
+		}
+		
 	}
 }
 
 function updatesocailfields($field, $value, $postid)
 {
-	if (!empty($value)) {
+	if (!empty($value) || $value == 0) {
 		update_field('social_media_pages', array($field => $value), $postid);
 		$arabic_city = pll_get_post_translations($postid);
-		update_field('social_media_pages', array($field => $value), $arabic_city['ar']);
+		if(!empty($arabic_city['ar'])){
+
+			update_field('social_media_pages', array($field => $value), $arabic_city['ar']);
+		 }
 	}
+}
+
+
+function update_image_fields($file,$postid){
+	if(isset($_POST['my_update_attachment_nonce_field']) && wp_verify_nonce($_POST['my_update_attachment_nonce_field'], 'my_update_attachment_nonce')){
+
+	$files=my_update_attachment($file,$postid);
+	$arabic_city = pll_get_post_translations($postid);
+	$filesar=my_update_attachment($file,$arabic_city);
+	if(is_wp_error($files) || is_wp_error($filesar)){
+		updatepostdata('environmental', $files->get_error_message(), $postid);
+
+	}else{
+		update_field('field_65aa401ca3226',$files['attach_id'],$postid);
+		update_field('field_65aa401ca3226',$filesar['attach_id'],$postid);
+	}
+} else{
+	updatepostdata('environmental', "nonsence", $postid);
+
+}
+
+
+
+
+}
+
+
+function my_update_attachment($file_input_name, $post_id, $title = '', $content = '') {
+  // Update attachment metadata
+  wp_update_attachment_metadata($post_id, $file_input_name);
+
+  if (!empty($_FILES[$file_input_name]['name'])) { // New upload
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+
+    $override['action'] = 'editpost';
+    $file = wp_handle_upload($_FILES[$file_input_name], $override);
+
+    if (isset($file['error'])) {
+      return new WP_Error('upload_error', $file['error']);
+    }
+
+    // Check file type
+    $file_type = wp_check_filetype($_FILES[$file_input_name]['name'], array(
+      'jpg|jpeg' => 'image/jpeg',
+      'gif' => 'image/gif',
+      'png' => 'image/png',
+    ));
+
+    if ($file_type['type']) {
+      $name_parts = pathinfo($file['file']);
+      $name = $file['filename'];
+      $type = $file['type'];
+      $title = $title ? $title : $name;
+      $attachment_content = $content;
+
+      $attachment = array(
+        'post_title' => $title,
+        'post_type' => 'attachment',
+        'post_content' => $attachment_content,
+        'post_parent' => $post_id,
+        'post_mime_type' => $type,
+        'guid' => $file['url'],
+      );
+
+      // Generate intermediate image sizes
+      $sizes = array();
+      foreach (get_intermediate_image_sizes() as $s) {
+        $sizes[$s] = array(
+          'width' => get_option("{$s}_size_w"),
+          'height' => get_option("{$s}_size_h"),
+          'crop' => get_option("{$s}_crop"),
+        );
+      }
+
+      $sizes = apply_filters('intermediate_image_sizes_advanced', $sizes);
+
+      foreach ($sizes as $size => $size_data) {
+        $resized = image_make_intermediate_size($file['file'], $size_data['width'], $size_data['height'], $size_data['crop']);
+        if ($resized) {
+          $attachment['sizes'][$size] = $resized;
+        }
+      }
+
+      // Insert the attachment
+      $attach_id = wp_insert_attachment($attachment, $file['file']);
+
+      if (!is_wp_error($attach_id)) {
+        // Update attachment metadata again
+        $attach_meta = wp_generate_attachment_metadata($attach_id, $file['file']);
+        wp_update_attachment_metadata($attach_id, $attach_meta);
+
+        return array(
+          'pid' => $post_id,
+          'url' => $file['url'],
+        );
+      }
+    }
+  }
+
+  // If there are no new files or if an error occurred
+  return new WP_Error('upload_error', 'No valid file uploaded.');
 }

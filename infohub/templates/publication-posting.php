@@ -34,18 +34,32 @@ $lang = pll_current_language();
 if ($lang == "ar") {
     $frtl = "force-ltr";
 }
+$post_id = get_the_ID();
 $verifiyRegId = 1;
 if (!isset($_GET['regId']) || $_GET['regId'] == "") {
     if (isset($_GET['status'])) {
         // var_dump(acf_get_field('field_65cc8463ce136', $_GET['status']));
+        $link='';
         if($lang == 'en'){
             echo "<div class='successalert'><h2>Thank you for your contribution, well received!</h2></div>";
+            $link=home_url("en/our-programs/urban-policy-research/?tab=srd1-tab-pane");
+
         }
         else{
             echo "<div class='successalert'><h2> شكرا لمساهمتك، استقبالا حسنا!</h2></div>";
-        }        ?>
+            $link=home_url("/برامجنا/برنامج-السياسات-الحضرية/");
 
-        <?php
+        }
+
+        ?>
+        <script>
+            setTimeout(function() {
+                window.location.href = "<?php echo $link; ?>";
+            },5000);
+        </script>
+
+
+<?php
     } else {
         wp_redirect(home_url());
         exit;
@@ -80,6 +94,35 @@ $arabCountries = array(
     array("name" => "Yemen", "abbreviation" => "YE")
 );
 
+if($lang == "ar"){
+
+    $arabCountries = array(
+        array("name" => "الجزائر", "abbreviation" => "DZ"),
+        array("name" => "البحرين", "abbreviation" => "BH"),
+        array("name" => "جزر القمر", "abbreviation" => "KM"),
+        array("name" => "جيبوتي", "abbreviation" => "DJ"),
+        array("name" => "مصر", "abbreviation" => "EG"),
+        array("name" => "العراق", "abbreviation" => "IQ"),
+        array("name" => "الأردن", "abbreviation" => "JO"),
+        array("name" => "الكويت", "abbreviation" => "KW"),
+        array("name" => "لبنان", "abbreviation" => "LB"),
+        array("name" => "ليبيا", "abbreviation" => "LY"),
+        array("name" => "موريتانيا", "abbreviation" => "MR"),
+        array("name" => "المغرب", "abbreviation" => "MA"),
+        array("name" => "عُمان", "abbreviation" => "OM"),
+        array("name" => "فلسطين", "abbreviation" => "PS"),
+        array("name" => "قطر", "abbreviation" => "QA"),
+        array("name" => "المملكة العربية السعودية", "abbreviation" => "SA"),
+        array("name" => "الصومال", "abbreviation" => "SO"),
+        array("name" => "السودان", "abbreviation" => "SD"),
+        array("name" => "سوريا", "abbreviation" => "SY"),
+        array("name" => "تونس", "abbreviation" => "TN"),
+        array("name" => "الإمارات العربية المتحدة", "abbreviation" => "AE"),
+        array("name" => "اليمن", "abbreviation" => "YE")
+    );
+
+}
+
 
 ?>
 
@@ -106,280 +149,7 @@ $arabCountries = array(
         color: #405561;
     }
 
-    .publication_main {
-        color: #405561;
-    }
-
-    .successalert {
-        width: 100%;
-        height: 100vh;
-        position: fixed;
-        background: rgba(0, 0, 0, 0.4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        z-index: 9999;
-    }
-
-    .successalert h2 {
-        color: black;
-        padding: 50px 21px;
-        background: white;
-        border-radius: 20px;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 27px;
-        letter-spacing: -0.011em;
-        text-align: center;
-    }
-
-    /* .publication_main .container-fluid{
-    margin-left: 75px;
-    margin-right: 75px !important;
-    
-} */
-    .publication_main .backbtn {
-        margin-top: 100px;
-    }
-
-    .publication_main .topMargin {
-        margin-top: 62px;
-    }
-
-    .publication_main .dropdownMargin {
-        margin-top: 94px;
-    }
-
-    .publication_main .textMargin {
-        margin-top: 104px;
-    }
-
-    .publication_main .btn {
-        background-color: #37A2DD;
-        color: #fff;
-    }
-
-    .publication_main .btn:hover {
-        color: #fff;
-    }
-
-    .publication_main .formMargin {
-        margin-top: 116px;
-    }
-
-    .publication_main .form-check-input {
-        color: #37A2DD;
-    }
-
-    .publication_main .portal-dropdown {
-        background-color: #1D78AB;
-    }
-
-    .publication_main .portal-input {
-        color: rgba(64, 85, 97, 0.50);
-    }
-
-    .publication_main .checkbox {
-        margin-top: 28px;
-    }
-
-    .publication_main .label-questions {
-        width: 40%;
-        background-color: #405561;
-    }
-
-    .publication_main .labelSmallText {
-        font-size: 10px;
-    }
-
-    .publication_main .label-response {
-        width: 55% !important;
-        background-color: #1D78AB;
-    }
-
-    .publication_main .labels {
-        width: 40% !important;
-        background-color: #7E9AAA;
-        margin-top: 5px;
-    }
-
-    .publication_main span {
-        font-size: 10px;
-    }
-
-    .publication_main .response-inputs {
-        width: 55%;
-        color: #405561 !important;
-        text-align: left;
-        background-color: #F0F6F8;
-        margin-top: 5px;
-    }
-
-    .publication_main .response-inputs:active {
-        outline: none;
-    }
-
-    .publication_main input[type=text]:focus {
-        outline: none !important;
-    }
-
-    .publication_main input[type=date]:focus {
-        outline: none !important;
-    }
-
-    .publication_main input[type=text]::placeholder {
-        color: #405561;
-    }
-
-    .publication_main select {
-        width: 35% !important;
-    }
-
-    .publication_main select:focus {
-        outline: none;
-    }
-
-    .publication_main select option:checked {
-        outline: none !important;
-        border: none !important;
-    }
-
-    .publication_main .sendbtn {
-        width: 100px;
-        background-color: #1D78AB;
-    }
-
-    /* ------------img upload input style */
-
-    .publication_main .custom-file {
-        width: 55%;
-        margin-top: 5px;
-        background-color: #F0F6F8;
-        cursor: pointer;
-    }
-
-    .publication_main .custom-file-input {
-        background-color: #F0F6F8;
-    }
-
-    .publication_main .custom-file-input::-webkit-file-upload-button {
-        visibility: hidden;
-    }
-
-    .publication_main .custom-file-input::before {
-        width: 100% !important;
-        content: '( Maximum 1 MB file size/ picture)';
-        display: inline-block;
-        background-color: #F0F6F8;
-        color: #405561;
-        border-radius: 5px;
-        outline: none;
-        white-space: nowrap;
-        cursor: pointer;
-        font-size: 12pt;
-    }
-
-    .publication_main .custom-file-input2::before {
-        width: 100% !important;
-        content: '';
-        display: inline-block;
-        background-color: #F0F6F8;
-        color: #405561;
-        border-radius: 5px;
-        cursor: pointer;
-        outline: none;
-        white-space: nowrap;
-        cursor: pointer;
-        font-size: 10pt;
-    }
-
-    .publication_main .custom-file-input+.custom-file-label {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    .publication_main .custom-file-label {
-        background-color: #7E9AAA;
-        border-radius: 5px;
-    }
-
-    /* year select input style */
-
-    .publication_main .yearSelect {
-        background-color: #F0F6F8 !important;
-        color: #405561 !important;
-    }
-
-    .publication_main .yearSelect select:focus {
-        outline: none;
-        border: none;
-    }
-
-    .publication_main #yearSelect {
-        width: 30% !important;
-        color: #405561;
-        background-color: #F0F6F8;
-    }
-
-    .publication_main #yearSelect option:checked {
-        outline: none !important;
-        border: none !important;
-    }
-
-    /* selection dropdowns style */
-
-    .publication_main .selectOption {
-        margin-top: 5px !important;
-        width: 55%;
-        background-color: #F0F6F8;
-    }
-
-    .publication_main .selectOption select {
-        background-color: #F0F6F8;
-        color: #405561;
-    }
-
-    .publication_main .input10 {
-        padding: 16px 10px !important;
-    }
-
-    /* media queries */
-
-    @media screen and (max-width: 560px) {
-
-        .publication_main .label-questions,
-        .publication_main .label-response {
-            width: 100% !important;
-            margin-top: 8px;
-        }
-
-        .publication_main .labels,
-        .publication_main .response-inputs {
-            width: 100% !important;
-            margin-top: 8px;
-        }
-
-        .publication_main .selectOption {
-            width: 100% !important;
-            margin-top: 8px;
-        }
-
-        .publication_main .custom-file {
-            width: 100% !important;
-            margin-top: 8px;
-        }
-
-        .publication_main .custom-file-label {
-            width: -webkit-fill-available;
-            padding: 5px;
-        }
-
-        .publication_main .sendbtn {
-            margin: 0px 15px;
-        }
-    }
+ 
 </style>
 <header>
 
@@ -457,32 +227,33 @@ $arabCountries = array(
                         <div class="row">
                             <div class="col">
                                 <div class="btn backbtn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-1" width="10" height="16" viewBox="0 0 10 20" fill="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-1 mi6_rotate_ar" width="10" height="16" viewBox="0 0 10 20" fill="none">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 0.325437C10.0976 0.759353 10.0976 1.46287 9.70711 1.89679L2.41421 10L9.70711 18.1032C10.0976 18.5371 10.0976 19.2406 9.70711 19.6746C9.31658 20.1085 8.68342 20.1085 8.29289 19.6746L0.292893 10.7857C-0.097631 10.3518 -0.0976311 9.64824 0.292893 9.21433L8.29289 0.325437C8.68342 -0.108479 9.31658 -0.108479 9.70711 0.325437Z" fill="white" />
                                     </svg>
-                                    Back
+                                    <?php print forceTranslate("Back", "خلف"); ?>
                                 </div>
 
-                                <h1 class="topMargin"><?php print forceTranslate(" Arab Urban Development Portal ", " سم المشروع البوابة العربية للتنمية الحضرية"); ?></h1>
+                                <h1 class="topMargin"><?php print forceTranslate(get_field('page_heading_en', $post_id), get_field('page_heading_ar', $post_id)); ?></h1>
 
-                                <p><?php print forceTranslate(" Urban Development Publications ", " اسم المشروع منشورات التنمية الحضرية"); ?></p>
+                                <p><?php print forceTranslate(get_field('sub_heading_en', $post_id), get_field('sub_heading_ar', $post_id)); ?></p>
 
 
                                 <p class="topMargin">
-                                    <?php print forceTranslate(" Is your publication related to a particular city in the Arab region?", " هل منشورك مرتبط بمدينة معينة في المنطقة العربية؟ "); ?>
-                                    ​
+                                    <?php print forceTranslate(get_field('city_region_en', $post_id), get_field('page_heading_ar', $post_id)); ?>
+                                
                                 </p>
                                 <div class="form-check">
                                     <input class="form-check-input particularcityarab" type="checkbox" value="yes" id="particularcityarab" name="particularcityarab" />
-                                    <label class="form-check-label" for="particularcityarab"> Yes </label>
+                                    <label class="form-check-label" for="particularcityarab"> <?php print forceTranslate("Yes", "نعم"); ?> </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input particularcityarab" type="checkbox" value="no" id="particularcityarabno" name="particularcityarabno" />
-                                    <label class="form-check-label" for="particularcityarab"> No </label>
+                                    <label class="form-check-label" for="particularcityarab"> <?php print forceTranslate("No", "لا"); ?> </label>
                                 </div>
-                                <div class="dropdown dropdownMargin downlistcity">
-                                    <div class="selectOption rounded-3 p-2">
-                                        <select id="regioncity" name="regioncity" class="border-0 p-2">
+                                <div class="dropdown dropdownMargin downlistcity mi6_pub_dropdown">
+                                    <div class="selectOption rounded-3 p-2 mi6_pub_select_dropdown">
+                                        <select id="regioncity" name="regioncity" class="border-0 p-2 mi6_pub_options">
+                                        <option value="0"><?php print forceTranslate("Select A city", "اختر مدينة") ?></option>
                                             <?php
                                             $args = array(
                                                 'post_type' => 'city', // Adjust post type as needed
@@ -518,7 +289,7 @@ $arabCountries = array(
 
                                             ?>
                                         </select>
-                                        <input type="text" id="nonregioncity" name="nonregioncity" class="rounded-5 p-2">
+                                        <input type="text" id="nonregioncity" name="nonregioncity" class="rounded-5 p-2 mi6_w_100">
                                         <!-- <select id="nonregioncity" name="nonregioncity" class="border-0 p-2">
                                             
                                             // $args = array(
@@ -544,17 +315,15 @@ $arabCountries = array(
 
 
                                 <p class="textMargin">
-                                    <?php print forceTranslate(" Is your publication related to a particular urban development
-                                        project in the Arab region?​", " هل منشورك متعلق بتنمية عمرانية معينة؟
-                                        المشروع في المنطقة العربية"); ?>
+                                    <?php print forceTranslate(get_field('project_region_en', $post_id), get_field('project_region_ar', $post_id)); ?>
 
                                 </p>
                                 <div class="form-check">
-                                    <input class="form-check-input mt-2 projectchecker_mi" type="checkbox" value="yes" id="projectyesaraban" />
-                                    <div class="dropdown">
-                                        <div class="selectOption rounded-3 p-2">
-                                            <select id="regionurban" name="regionurban" class="border-0" disabled>
-                                                <option value="0">Select A Project</option>
+                                    <input class="form-check-input mt-2 mi6_pub_checker" type="checkbox" value="yes" id="projectyesaraban" />
+                                    <div class="dropdown mi_dropdown_blue">
+                                        <div class="selectOption rounded-3 p-2 mi6_pub_dropdown" id="ocityfirstparent">
+                                            <select class="mi6_pub_options" id="regionurban" name="regionurban" class="border-0">
+                                                <option value="0"><?php print forceTranslate("Select A Project", "حدد مشروع") ?></option>
                                                 <?php
                                                 $args = array(
                                                     'post_type' => 'project',
@@ -567,7 +336,12 @@ $arabCountries = array(
                                                         $query->the_post();
                                                         $post_id = get_the_ID();
                                                         $country = get_field('section_1', $post_id);
-                                                        $title = esc_html(get_the_title());
+                                                        $title='';
+                                                        if($lang == 'en'){
+                                                            $title=$country['project_name_en'];
+                                                        }else{
+                                                            $title=$country['project_name_ar'];
+                                                        }
                                                         if (in_array($country["country"]["value"], array_column($arabCountries, "abbreviation"))) {
                                                             echo '<option value="' . $post_id . '">' . $title . '</option> ';
                                                         }
@@ -579,12 +353,13 @@ $arabCountries = array(
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input mt-2 projectchecker_mi" type="checkbox" value="no" id="projectnoaraban" />
-                                    <input type="text" id="nonregionurbanproject" name="nonregionurbanproject" class="rounded-5 p-2 ms-2" disabled>
+                                <div class="form-check mt-5">
+                                    <input class="form-check-input mt-2 mi6_pub_checker mar-right-15" type="checkbox" value="no" id="projectnoaraban" />
+                                    <label class="form-check-label" for="projectnoaraban"><?php print forceTranslate("Other","اخرى");?></label>
+                                    <input type="text" id="nonregionurbanproject" name="nonregionurbanproject" class="rounded-5 p-2 ms-2 mi6_m_15 mi6_w_15" placeholder="<?php print forceTranslate("Specify name of project","حدد اسم المشروع الاخر");?>">
                                 </div>
 
-                                    <!-- <div class="form-check mt-2">
+                                <!-- <div class="form-check mt-2">
                                             <input class="form-check-input checkbox mt-2" type="checkbox" value="" id="nameofproject" />
                                             <div class="dropdown">
                                                 <div class="selectOption rounded-3 p-2">
@@ -611,57 +386,67 @@ $arabCountries = array(
                                                 </div>
                                             </div>
                                         </div> -->
-                                
+
                             </div>
                             <!-- question answer start -->
                             <div class="row from formMargin text-light ">
 
                                 <div class="text-light d-sm-flex flex-row gap-sm-5 ">
                                     <div class=" label-questions rounded-3 p-2">
-                                        <?php print forceTranslate(" Question", " سؤال "); ?>
+                                        <?php print forceTranslate(get_field('question_heading_en'), get_field('question_heading_ar')); ?>
                                     </div>
                                     <div class=" label-response rounded-3 p-2">
-                                        <?php print forceTranslate(" Response", " إجابة "); ?>
+                                        <?php print forceTranslate(get_field('answer_heading_ar'), get_field('answer__heading_ar')); ?>
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 1. Publication title (English or French)", " 1. عنوان المنشور (الإنجليزية أو الفرنسية)"); ?></div>
-                                    <input id="publictitlefrance" name="publictitlefrance" type="text" placeholder=" <?php print forceTranslate(" Lorem ipsum dolor sit amet", " العميل سعيد للغاية"); ?>" class="response-inputs p-2 rounded-3 border-0" required />
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_title_en_fr'), get_field('publication_title_ar_fr')); ?></div>
+                                    <input id="publictitlefrance" name="publictitlefrance" type="text" placeholder=" <?php print forceTranslate(get_field('response_publication_title_enfr'), get_field('response_publication_title_enfr_ar')); ?>" class="response-inputs p-2 rounded-3 border-0" required />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate("2. Publication title (Arabic)", " 2. عنوان المطبوعة (عربي)"); ?></div>
-                                    <input id="publictitlearabic" name="publictitlearabic" type="text" placeholder="<?php print forceTranslate("Project Name Lorem ipsum dolor sit amet ", " العميل سعيد للغايةاسم المشروع"); ?>" class="response-inputs p-2 rounded-3 border-0" required />
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('_publication_title_en'), get_field('_publication_title-ar')); ?></div>
+                                    <input id="publictitlearabic" name="publictitlearabic" type="text" placeholder="<?php print forceTranslate(get_field('response_publication_title_ar'), get_field('response_publication_title_ar_ar')); ?>" class="response-inputs p-2 rounded-3 border-0" required />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 3. Language Versions ", " 3. إصدارات اللغة"); ?></div>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('_language_versions_en'), get_field('_language_versions_ar')); ?></div>
                                     <div class="selectOption rounded-3 p-2 rounded-3">
                                         <select id="langversion" name="langversion" class="border-0">
                                             <?php $field = get_field_object('field_65aa2726e1809');
 
+                                            $language_array=array(
+                                                'fr'=>'فرنسي',
+                                                'ar' => 'العربية',
+                                                'en' => 'الانجليزية',
+                                                '0' => 'الرجاء التحديد',
+                                            );
                                             if ($field['choices']) {
-                                                foreach ($field['choices'] as $value => $label) :
-                                                    echo "<option value='$value'>$label</option>";
-                                                endforeach;
+                                                foreach ($field['choices'] as $value => $label) {
+                                                
+                                                    if($lang == "en"){
+                                                        echo "<option value='$value'>$label</option>";
+                                                    }else{
+                                                        echo "<option value='$value'>$language_array[$value]</option>";
+                                                    }                                                              
+                                            }
                                             }
                                             ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 4. Publication link (English)", " 4. رابط النشر (انجليزي)"); ?></div>
-                                    <input id="publiclinkeng" name="publiclinkeng" type="text" placeholder="<?php print forceTranslate(" Copy link ", "نسخ الوصلة
-"); ?> " class="response-inputs p-2 rounded-3 border-0" />
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_link_eng_en'), get_field('publication_link_eng_ar')); ?></div>
+                                    <input id="publiclinkeng" name="publiclinkeng" type="text" placeholder="<?php print forceTranslate(get_field('response_publication_link_en'), get_field('response_publication_link_en_ar')); ?> " class="response-inputs p-2 rounded-3 border-0" />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" Publication link (Arabic) ", " 5. رابط النشر (عربي)اسم المشروع"); ?></div>
-                                    <input id="publiclinkar" name="publiclinkar" type="text" placeholder="<?php print forceTranslate(" Copy link ", " ننسخ الوصلة"); ?>" class="response-inputs p-2 rounded-3 border-0" />
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_link_arb_en'), get_field('publication_link_arb_ar')); ?></div>
+                                    <input id="publiclinkar" name="publiclinkar" type="text" placeholder="<?php print forceTranslate(get_field('response_publication_link_ar'), get_field('response_publication_link_ar_ar')); ?>" class="response-inputs p-2 rounded-3 border-0" />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate("6. Publication link (French)", " 6. رابط النشر (فرنسي)"); ?></div>
-                                    <input id="publiclinkfr" name="publiclinkfr" type="text" placeholder="<<?php print forceTranslate(" Copy link ", "نسخ الوصلة "); ?>" class="response-inputs p-2 rounded-3 border-0" />
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('_publication_link_frn_en'), get_field('_publication_link_frn_ar')); ?></div>
+                                    <input id="publiclinkfr" name="publiclinkfr" type="text" placeholder="<?php print forceTranslate(get_field('response_publication_link_fr'), get_field('response_publication_link_fr_ar')); ?>" class="response-inputs p-2 rounded-3 border-0" />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" Copy link ", " ننسخ الوصلة "); ?></div>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_date'), get_field('date_of_publication_ar')); ?></div>
                                     <div class="yearSelect response-inputs d-flex align-items-center  rounded-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ms-2" width="20" height="20" viewBox="0 0 21 21" fill="none">
                                             <path d="M16.9615 20.9998H4.03846C2.96739 20.9998 1.9402 20.5743 1.18284 19.8169C0.42548 19.0596 0 18.0324 0 16.9613V5.65364C0 4.58257 0.42548 3.55537 1.18284 2.79801C1.9402 2.04065 2.96739 1.61517 4.03846 1.61517H16.9615C18.0326 1.61517 19.0598 2.04065 19.8172 2.79801C20.5745 3.55537 21 4.58257 21 5.65364V16.9613C21 18.0324 20.5745 19.0596 19.8172 19.8169C19.0598 20.5743 18.0326 20.9998 16.9615 20.9998ZM4.03846 3.23056C3.39582 3.23056 2.7795 3.48585 2.32509 3.94026C1.87067 4.39468 1.61538 5.01099 1.61538 5.65364V16.9613C1.61538 17.604 1.87067 18.2203 2.32509 18.6747C2.7795 19.1291 3.39582 19.3844 4.03846 19.3844H16.9615C17.6042 19.3844 18.2205 19.1291 18.6749 18.6747C19.1293 18.2203 19.3846 17.604 19.3846 16.9613V5.65364C19.3846 5.01099 19.1293 4.39468 18.6749 3.94026C18.2205 3.48585 17.6042 3.23056 16.9615 3.23056H4.03846Z" fill="#405561" />
@@ -675,15 +460,21 @@ $arabCountries = array(
 
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 8.Publication type", " 8.نوع النشر"); ?></div>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_type_en'), get_field('publication_type_ar')); ?></div>
                                     <div class="selectOption rounded-3 p-2">
 
                                         <select id="publicationtype" name="publicationtype" class="border-0">
+                                        <option value="0"><?php print forceTranslate("Please Select", "الرجاء التحديد") ?></option>
                                             <?php $field = get_field_object('field_65aa28cb6c1c1');
 
                                             if ($field['choices']) {
                                                 foreach ($field['choices'] as $value => $label) :
-                                                    echo "<option value='$value'>$label</option>";
+                                                    if($value != 0){
+
+                                                        echo "<option value='$value'>$label</option>";
+
+                                                    }
+                                                    
                                                 endforeach;
                                             }
                                             ?>
@@ -691,15 +482,21 @@ $arabCountries = array(
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate("9. Theme (maximum 5)", " 9. الموضوع (الحد الأقصى 5)"); ?></div>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('theme_maximum_5_en'), get_field('theme_maximum_5_ar')); ?></div>
                                     <div class="selectOption rounded-3 p-2">
 
-                                        <select id="publicationtheme" name="publicationtheme" class="border-0">
+                                        <select id="publicationtheme" name="publicationtheme[]" class="border-0 form-control selectpicker" multiple placeholder="<?php print forceTranslate("Please Select", "الرجاء التحديد") ?>" >
                                             <?php $field = get_field_object('field_65aa29a3b255f');
+                                            $others = $field['choices']['1837'];
+                                            unset($field['choices']['1837']);
+                                            $field['choices']['1837'] = $others;
 
                                             if ($field['choices']) {
                                                 foreach ($field['choices'] as $value => $label) :
-                                                    echo "<option value='$value'>$label</option>";
+                                                    if($value != 0){
+                                                        
+                                                        echo "<option value='$value'>$label</option>";
+                                                    }
                                                 endforeach;
                                             }
                                             ?>
@@ -707,25 +504,34 @@ $arabCountries = array(
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 10. Organization Name (English or French) ", " 10. اسم المنظمة (الإنجليزية أو الفرنسية)"); ?>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('_organization_name_english_or_french_en'), get_field('_organization_name_english_or_french_ar')); ?>
                                         <p class="labelSmallText ms-4 mb-0"> <?php print forceTranslate("(that authored/ published the document)", " (الذي قام بتأليف/نشر الوثيقة)"); ?></p>
                                     </div>
-                                    <input id="puborganizationnameeng" name="puborganizationnameeng" type="text" placeholder="<?php print forceTranslate("Lorem ipsum dolor sit amet ", " العميل سعيد للغايةاسم المشروع"); ?>" class="response-inputs input10 rounded-3 border-0" />
+                                    <input id="puborganizationnameeng" name="puborganizationnameeng" type="text" placeholder="<?php print forceTranslate(get_field('response_organization_name_enfr'), get_field('response_organization_name_enfr_ar')); ?>" class="response-inputs input10 rounded-3 border-0" />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(" 11.Organization Name (Arabic)", " 11.اسم المنظمة (عربي)"); ?>
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('organization_name_arabic_en'), get_field('organization_name_arabic_ar')); ?>
                                         <p class="labelSmallText ms-3 mb-0"> <?php print forceTranslate("(that authored/ published the document)", " (الذي قام بتأليف/نشر الوثيقة)"); ?></p>
                                     </div>
-                                    <input id="puborganizationnamear" name="puborganizationnamear" type="text" placeholder="<?php print forceTranslate("Lorem ipsum dolor sit amet ", " العميل سعيد للغايةاسم المشروع"); ?>" class="response-inputs p-2 input10 rounded-3 border-0" />
+                                    <input id="puborganizationnamear" name="puborganizationnamear" type="text" placeholder="<?php print forceTranslate(get_field('response_organization_name_ar'), get_field('response_organization_name_ar_ar')); ?>" class="response-inputs p-2 input10 rounded-3 border-0" />
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(" 12. Organization Type", " 12. نوع المنظمة"); ?></div>
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('organization_type_en'), get_field('organization_type_ar')); ?></div>
                                     <div class="selectOption rounded-3 p-2">
                                         <select id="puborganizationtype" name="puborganizationtype" class="border-0">
+                                        <option value="0"><?php print forceTranslate("Please Select", "الرجاء التحديد") ?></option>
                                             <?php $orgtype = get_field_object('field_65aa2b592f74f');
+                                            $others = $orgtype['choices']['1659'];
+                                            unset($orgtype['choices']['1659']);
+                                            $orgtype['choices']['1659'] = $others;
                                             if ($orgtype['choices']) {
                                                 foreach ($orgtype['choices'] as $value => $label) {
-                                                    echo "<option value='$value'>$label</option>";
+                                                    if($value != 0){
+
+                                                        echo "<option value='$value'>$label</option>";
+
+                                                    }
+                                                    
                                                 }
                                             }
                                             ?>
@@ -733,11 +539,7 @@ $arabCountries = array(
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(" 13. Publication country", " 13. بلد النشر"); ?>
-
-
-
-
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('publication_country_en'), get_field('publication_country_ar')); ?>
 
                                     </div>
                                     <div class="selectOption rounded-3 p-2">
@@ -745,7 +547,7 @@ $arabCountries = array(
                                             <?php $country = get_field_object('field_65aa214151992');
                                             if ($country['choices']) {
                                                 foreach ($country['choices'] as $value => $label) {
-                                                    echo "<option value='$value'>$label</option>";
+                                                    echo "<option value='$value'>".getTransCountry($value)."</option>";
                                                 }
                                             }
                                             ?>
@@ -753,7 +555,7 @@ $arabCountries = array(
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(" 14. Publication image ", " 14. صورة النشر"); ?>
+                                    <div class="labels rounded-3 p-2"><?php print forceTranslate(get_field('publication_image_en'), get_field('publication_image_ar')); ?>
 
 
 
@@ -772,7 +574,7 @@ $arabCountries = array(
                                     </div>
                                 </div>
                                 <div class="text-light d-sm-flex flex-row  gap-sm-5">
-                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(" Upload publication (optional)", " 15. تحميل المنشور (اختياري)"); ?>
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('upload_publication_optional_en'), get_field('upload_publication_optional_ar')); ?>
 
 
 
@@ -790,7 +592,26 @@ $arabCountries = array(
                                         <input id="imagepdf" type="file" class="custom-file-input2" name="imagepdf" />
                                     </div>
                                 </div>
-                                <input type="submit" class="btn sendbtn my-3 rounded-3" value="Send">
+                                <div class="text-light d-sm-flex flex-row  gap-sm-5">
+                                    <div class="labels rounded-3 p-2"> <?php print forceTranslate(get_field('upload_publication_optional_en'), get_field('upload_publication_optional_ar')); ?>
+
+
+
+
+
+                                    </div>
+                                    <div class="custom-file rounded-3 p-1 d-flex">
+                                        <label class="custom-file-label px-sm-5 imagefileslabel" for="customFile"><?php print forceTranslate(" Upload PDF File ", " تحميل ملف PDF"); ?>
+
+
+
+
+
+                                        </label>
+                                        <input id="imagear" type="file" class="custom-file-input2" name="imagear" />
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn sendbtn my-3 rounded-3" value="<?php print forceTranslate("Send", "إرسال"); ?>">
                             </div>
                         </div>
                         <!-- question answer start -->
@@ -864,8 +685,9 @@ $arabCountries = array(
                         $(".successalert").hide();
                         window.location.assign('<?php echo home_url(); ?>');
                     })
-                } 
+                }
             });
+
             function doesParamExist(paramName) {
                 return new URLSearchParams(window.location.search).has(paramName);
             }

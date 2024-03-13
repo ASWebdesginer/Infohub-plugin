@@ -120,7 +120,7 @@ $postId = get_the_ID();
 
                   <center>
 
-                    <p class="fnt-dark-gray fnt-20">If you are an Arab municipality or local authority, please contribute to our Portal by providing information about your city by filling <a href="#" data-step="step1" data-num="1" class="step-button" onClick="return false;">out this form</a>.</p>
+                    <p class="fnt-dark-gray fnt-20">If you are an Arab municipality or local authority, please contribute to our Portal by providing information about your city by filling out <a href="#" data-step="step1" data-num="1" class="step-button fnt-blue-light" onClick="return false;">this form</a>.</p>
 
                   </center>
 
@@ -338,7 +338,7 @@ $postId = get_the_ID();
 
                   <center>
 
-                    <p class="fnt-dark-gray fnt-20">اذا كنتم تمثلون بلدية أو إدارة محلية عربية، يرجى المساهمة في بوابتنا من خلال تقديم معلومات حول مدينتكم بملء<a href="#" data-step="step1" data-num="1" class="step-button" onClick="return false;">هذه الإستمارة</a>.</p>
+                    <p class="fnt-dark-gray fnt-20">ذا كنتم تمثلون بلدية أو إدارة محلية عربية، يرجى المساهمة في بوابتنا من خلال تقديم معلومات حول مدينتكم بملء  <a href="#" data-step="step1" data-num="1" class="step-button fnt-blue-light" onClick="return false;">هذه الإستمارة</a>.</p>
 
                   </center>
 
@@ -380,7 +380,7 @@ $postId = get_the_ID();
 
 
 
-                    <div class="form-check txt-al-left">
+                    <div class="form-check mi6-w-50">
 
                       <input class="form-check-input step-button" type="checkbox" value="" data-step="step2" data-num="2" id="flexCheckDefault">
 
@@ -530,6 +530,14 @@ $postId = get_the_ID();
 
 
 
+    <?php
+  $link = "";
+  if ($lang == "en") {
+    $link = home_url("en/our-programs/urban-policy-research/?tab=srd1-tab-pane");
+  } else {
+    $link = home_url("برامجنا/برنامج-السياسات-الحضرية");
+  }
+  ?>
 
 
   <?php get_footer();?>
@@ -541,7 +549,20 @@ $postId = get_the_ID();
     jQuery(document).ready(function(){
 
 
+      jQuery("body").on("click",'.btn-infohub-submit', function(e) {
+        //  e.preventDefault();
+     
+        var url= "<?php echo $link;?>";
 
+        setTimeout(function(){
+          window.location.href = url;
+        },3000);
+     
+        // if (classlist[0].indexOf(clakos) !== -1) {
+        //   window.location.href = url;
+        //         }
+
+      })
       jQuery(".step-button").each(function(){
 
 

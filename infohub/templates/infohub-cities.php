@@ -16,7 +16,7 @@ $projUrl = home_url().'/infohub/cities/?id=';
 
 if($lang == "ar"){
 
-  $projUrl = home_url().'/infohub-ar /cities/?id=';
+  $projUrl = home_url().'/infohub-ar/cities/?id=';
 
 }
 
